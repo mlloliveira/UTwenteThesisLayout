@@ -1,0 +1,30 @@
+TEMPLATE SOURCE
+Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+
+This work may be distributed and/or modified under the conditions of the
+LaTeX Project Public License, version 1.3c (LPPL-1.3c).
+The complete, unmodified licence text is included in LICENSE and is available
+at https://www.latex-project.org/lppl/lppl-1-3c.txt.
+
+This work has the LPPL maintenance status "author-maintained".
+The Current Maintainer is Marcio Luiz Lima de Oliveira.
+The work consists of the source and documentation files listed in the
+"LPPL-covered work" section of MANIFEST.txt. Preserve the original layout
+credits to Marcio Luiz Lima de Oliveira and V. el Hakim.
+
+EXAMPLE THESIS COPYRIGHT
+The copyright paragraph printed on the example approval page belongs to the
+university front-matter model and describes the fictional thesis by Alex Morgan.
+It is not a licence for the template's source code. Replace it as appropriate
+for the real thesis and the approved university title pages.
+
+THIRD-PARTY ASSETS
+The NASA/Apollo 17 photograph is identified as public domain in the United
+States by its source. See Chapters/Chapter_3/fig/ATTRIBUTION.txt.
+The UT logo is an institutional identity asset. See
+Chapters/Chapter_0/fig/ATTRIBUTION.txt. No university endorsement is implied.
+
+DEPENDENCIES
+Standard LaTeX packages are not vendored. They retain their own licences in
+the TeX distribution. The template does not assign a new licence to those
+packages, university wording or third-party assets.

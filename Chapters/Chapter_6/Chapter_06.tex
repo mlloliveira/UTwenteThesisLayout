@@ -1,0 +1,169 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{Make the design your own}\label{chap:06}
+\renewcommand{\FigLocation}{Chapters/Chapter_6/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_6/}
+\begin{absbox}
+The original visual language is retained: chapter colours, edge markers, circular page numbers and a compact book size. This chapter gives specific recipes for adapting each part.
+\end{absbox}
+
+\section{Where to make a change}
+Use the end of \texttt{ThesisDetails.tex} for small personal overrides after
+the base configuration has loaded. Edit \texttt{Configuration.tex} when changing
+package options or the implementation of a style. Make one visible change at a
+time, rebuild, and inspect a chapter opening, an ordinary left/right page,
+a figure page and the back matter. Those pages exercise different parts of
+the design.
+
+\section{Chapter colours}
+\verb|\ThumbColor{index}| chooses the main chapter colour and
+\verb|\absColor{index}| chooses its companion tint. The index is zero-based:
+index 0 corresponds to Chapter 1, index 1 to Chapter 2, and so on. The default
+eight-colour sequence moves from teal through cadet blue, grey blue, marine
+blue, sky blue and cornflower blue to Egyptian blue and blue.
+
+Each numbered chapter opening advances the \texttt{chapCnt} counter.
+\verb|\ColorTheme| reads the current main colour;
+\verb|\NumberChapterColor| selects the colour needed while the next chapter
+number is being drawn. \verb|\SectionColor| mixes the theme with black for
+readability. Do not advance \texttt{chapCnt} manually inside an ordinary chapter.
+
+Here is a complete two-colour recipe. It makes Chapter 1 green, Chapter 2 plum
+and later chapters green. Extend both case lists to assign more colours:
+\begin{lstlisting}
+% Add at the end of ThesisDetails.tex.
+\definecolor{Forest}{HTML}{245B47}
+\definecolor{Plum}{HTML}{603F65}
+\renewcommand{\ThumbColor}[1]{%
+  \ifcase #1 Forest\or Plum\else Forest\fi}
+\renewcommand{\absColor}[1]{%
+  \ifcase #1 Forest!15!white\or Plum!15!white%
+  \else Forest!15!white\fi}
+\renewcommand{\HeadingColor}{Forest}
+\renewcommand{\TitleColor}{Forest!70!black}
+\end{lstlisting}
+The colour \texttt{Forest!15!white} contains 15 percent Forest and 85 percent
+white. The abstract box applies its own further tint, so adjust its
+\texttt{colback} setting if your chosen colour becomes too faint.
+\verb|\ColorDarkTeal| and the other \texttt{Color...} commands are aliases for
+the named palette; changing an alias changes every place that uses it.
+\verb|\HeadingColor| and \verb|\TitleColor| serve nonchapter accents.
+The default front and back covers use \texttt{LightTeal2} and \texttt{DarkTeal}
+directly, so update those definitions or the cover files for a matching cover.
+
+For a single-colour book, set both selectors to a fixed colour:
+\begin{lstlisting}
+\renewcommand{\ThumbColor}[1]{black!75}
+\renewcommand{\absColor}[1]{black!10}
+\renewcommand{\SectionColor}{black}
+\hypersetup{hidelinks}
+\end{lstlisting}
+This changes chapter accents and links. The covers and theorem boxes have their
+own colours; change those as well if the entire book must be monochrome.
+
+\section{Edge markers and page numbers}
+The edge markers are drawn by \verb|\lthumb| and \verb|\rthumb|. The template
+adds one switch, \verb|\ThesisThumbsfalse|, to hide them while keeping the rest
+of the page style. \verb|\ThesisThumbstrue| enables them again. The
+\texttt{notationstyle} page style already omits the markers and is used for
+front and back matter.
+
+\verb|\thumbheight| controls marker height, \verb|\thumbedge| its edge offset,
+\verb|\thumbhspace| its horizontal extent, and \verb|\thumbvspace| the spacing
+between marker positions. If you change the number of chapters, update the
+palette and recompute the spacing together:
+\begin{lstlisting}
+\renewcommand{\ThesisChapterCount}{6}
+\setlength\thumbvspace{%
+  (\textheight - 1cm - \thumbheight/2)/\ThesisChapterCount}
+\end{lstlisting}
+The count reserves marker positions; it does not include or exclude chapters.
+Change the \verb|\include| commands in \texttt{main.tex} separately.
+Use a positive integer. For a large number of chapters, reduce the marker
+height or disable markers so they do not overlap.
+
+\verb|\PageNumberStyle| defines the TikZ node named \texttt{O} used in the
+footer. Preserve that node name because the surrounding picture uses its
+baseline. \verb|\minsize| sets its minimum size, \verb|\myfontsize| the number
+font size and \verb|\myfontconfig| the shared font/weight.
+\begin{lstlisting}
+\renewcommand{\PageNumberStyle}{%
+  \node(O)[draw=\ColorTheme,rounded corners=2pt,
+    minimum size=\minsize,fill=white]
+    {\textcolor{black}{\myfontconfig\myfontsize\thepage}}}
+\end{lstlisting}
+This replaces the circle with a rounded box. The caller supplies the terminating
+TikZ semicolon; do not add a second standalone drawing command outside the node.
+
+\section{Fonts and headings}
+The inherited body is sans serif. For a serif body and serif headings, add:
+\begin{lstlisting}
+\renewcommand{\familydefault}{\rmdefault}
+\renewcommand{\myfont}{\rmfamily}
+\end{lstlisting}
+Changing only \verb|\familydefault| affects the body while the explicit
+\verb|\myfont| helper can keep headings sans serif. The supplied Latin Modern
+fonts support the pdfLaTeX setup. Installing a different font package is a
+separate choice; switching to system fonts requires an engine and font setup
+designed for LuaLaTeX or XeLaTeX.
+
+The \texttt{thesis} chapter style controls the chapter-number tile, title
+alignment and space before/after the heading. Its \texttt{beforechapskip},
+\texttt{midchapskip} and \texttt{afterchapskip} lengths are in
+\texttt{Configuration.tex}. Sections and subsections use \verb|\titleformat|.
+Adjust their \verb|\fontsize{size}{baseline}| values and colour together; keep
+a positive baseline if you expect a heading to wrap onto several lines.
+The \verb|\chaptermark| and \verb|\sectionmark| definitions set running-head
+text. A short optional chapter title can help long headings:
+\begin{lstlisting}
+\chapter[Short running title]{A Longer Descriptive Chapter Title}
+\end{lstlisting}
+
+\section{Paper size, trim and margins}
+The original geometry is retained: 176 by 246\,mm paper, a 170 by 240\,mm
+layout and a 3\,mm offset on each side. That provides a 3\,mm bleed area.
+The inherited binding offset is $-3$\,mm; confirm this and the inner margin
+with your printer. The page dimensions are a design decision, not a universal
+UT requirement. The configuration synchronises \texttt{memoir}'s physical
+stock size with the final \texttt{geometry} paper dimensions immediately before
+the document begins. Keep that hook: otherwise the class can export a Letter-size
+PDF even though the text and cover use the smaller thesis dimensions.
+
+For an untrimmed A4 digital draft, put a complete geometry override after the
+configuration, including the layout and offset inherited from the print setup:
+\begin{lstlisting}
+\geometry{papersize={210mm,297mm},layoutsize={210mm,297mm},
+  layoutoffset={0mm,0mm},bindingoffset=0mm,
+  inner=30mm,outer=25mm,top=25mm,bottom=25mm}
+\setlength\thumbvspace{%
+  (\textheight - 1cm - \thumbheight/2)/\ThesisChapterCount}
+\end{lstlisting}
+Changing only the paper size would leave the smaller trim layout in place.
+After changing geometry, review marker placement and cover text widths too.
+The propositions entry point has a later geometry override of its own.
+
+\section{Covers and boxes}
+The default covers are editable TikZ artwork in \texttt{Cover.tex} and
+\texttt{BackCover.tex}. To use complete cover artwork, set the two paths in
+\texttt{ThesisDetails.tex}:
+\begin{lstlisting}
+\renewcommand{\coverlocation}{Chapters/Chapter_0/fig/cover.pdf}
+\renewcommand{\backcoverlocation}{%
+  Chapters/Chapter_Appendix/fig/backcover.pdf}
+\end{lstlisting}
+Leave a path empty to use the corresponding built-in design. The artwork
+replaces the whole page, so include the title and author in an imported cover.
+Supply artwork with the same aspect ratio and bleed as the paper; the full-page
+inclusion specifies both dimensions. A printer's full spread with spine is a
+different deliverable from these individual front/back pages.
+
+The \texttt{absbox} environment uses the current chapter tint. Give one box a
+different heading with \verb|\begin{absbox}[title={Chapter overview}]|.
+Change its \texttt{newtcolorbox} definition for a global adjustment.
+The theorem and proposition boxes use \texttt{LightTeal2}; definition boxes use
+\texttt{PinkNude}. Their \texttt{coltitle}, \texttt{colbacktitle} and
+\texttt{colback} keys are independent of the chapter palette.

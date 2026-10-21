@@ -1,0 +1,92 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{Start with the structure}\label{chap:01}
+\renewcommand{\FigLocation}{Chapters/Chapter_1/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_1/}
+\begin{absbox}
+This is a thesis layout whose example content is its user guide. Start here to build the document, find the files and replace the examples without reorganising your chapters.
+\end{absbox}
+
+\section{A working document and a guide}
+Read the typeset examples beside their source. A bordered code listing shows
+what to type; the figure, equation or paragraph nearby shows how it is used.
+Listings are literal text, so a declaration shown in a listing does not define
+a command. The actual declarations live in the files named in the explanation.
+
+The design uses the \texttt{memoir} class: coloured chapter openings, chapter
+markers on the page edges, running headings and circular page numbers. These
+are design choices. The university title pages have a separate role and are
+explained in \autoref{chap:02}. This is a community template derived from a thesis,
+not an official university-issued class.
+
+\section{Build from the root folder}
+Use a recent full TeX Live or MiKTeX installation with \texttt{memoir} and the
+packages listed in \texttt{Configuration.tex}. TeX Live 2025 or later is the
+intended starting point. Select \texttt{main.tex} as the main document and
+pdfLaTeX as the engine. The bibliography backend is BibTeX, selected by
+\texttt{backend=bibtex} in the configuration.
+\begin{lstlisting}[language={}]
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
+\end{lstlisting}
+Run pdfLaTeX again if it still requests a rerun. First-use pages, acronyms and
+the table of contents need information from previous runs. An empty symbol list
+on the first pass is expected. An alternative is \texttt{latexmk -pdf main.tex},
+which manages the required passes. In an online editor, upload the whole folder,
+select \texttt{main.tex}, select pdfLaTeX and use its complete rebuild option
+after changing bibliography settings.
+
+Build \texttt{propositions.tex} separately with pdfLaTeX. It reads the same
+personal details but produces a smaller, independent insert. It is not included
+in \texttt{main.tex}. Compilation commands are instructions for the reader;
+the distributed source review does not substitute for a build on your system.
+
+\section{Where each piece belongs}
+\begin{table}[htbp]
+\centering\small
+\caption{The existing folder structure and its purpose.}
+\label{tab:structure}
+\begin{tabularx}{\linewidth}{@{}p{0.43\linewidth}X@{}}
+\toprule
+Location & Purpose\\\midrule
+\texttt{main.tex} & Reading order and document-level switches.\\
+\texttt{ThesisDetails.tex} & Shared author, title, date, identifiers and cover paths.\\
+\texttt{Configuration.tex} & Packages, page geometry, colours and styles.\\
+\texttt{DeclareSymbols.tex} & Global symbol registry and your declarations.\\
+\texttt{MathOperators.tex} & Mathematical operators and delimiter helpers.\\
+\texttt{Chapters/Chapter\_0} & Covers, title pages, acknowledgements and summaries.\\
+\texttt{Chapters/Chapter\_1} to \texttt{Chapter\_8} & One main file per chapter.\\
+\texttt{fig/} within each chapter & Figures owned by that chapter.\\
+\texttt{Chapters/Chapter\_Appendix} & Acronyms, symbols, notation and back cover.\\
+\texttt{References/} & Separate reference and publication databases.\\
+\texttt{tests/} & Source checks and an optional typesetting regression document.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Replace content in small steps}
+Start with \texttt{ThesisDetails.tex}; then replace the English and Dutch
+summaries, acknowledgements and chapter text. Keep figures in their chapter's
+\texttt{fig} folder. Empty figure directories contain a \texttt{.gitkeep} file
+so Git preserves them. Chapter 8 has no figure directory in the original tree;
+add one there only if you later need figures in that chapter.
+
+Retain labels while you are drafting, or update every reference when renaming
+them. A consistent pattern such as \texttt{fig:ch3:earth}, \texttt{eq:linear}
+and \texttt{sec:acronyms} makes searches useful. Prefer \verb|\autoref{...}|
+for named cross-references and \verb|\eqref{...}| for parenthesised equation
+numbers. Do not type the resulting numbers by hand.
+
+\section{Source files and generated files}
+Share source files, bibliography databases, figure assets and their credits.
+Files such as \texttt{.aux}, \texttt{.log}, \texttt{.toc} and \texttt{.bbl} are
+build products. The included \texttt{.gitignore} excludes these products while
+allowing PDF figures in the chapter directories. It does not ignore every PDF.
+The old local copies of standard \texttt{.sty} packages are not bundled; the
+template uses the maintained copies in the TeX distribution.

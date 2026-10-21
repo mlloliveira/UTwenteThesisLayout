@@ -1,0 +1,631 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+% Visual design retained from the source thesis. See Chapters 6 and 7.
+%Configurations
+
+%%%
+\usepackage[final]{microtype}
+\microtypesetup{expansion=false} %Coment this line
+\usepackage[dvipsnames]{xcolor}
+\usepackage{intcalc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{subfig}
+\usepackage{varwidth}
+\usepackage[printonlyused,withpage]{acronym} %nohyperlinks
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage[siunitx]{circuitikz}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{minibox}
+\usepackage{multirow}
+\usepackage{wrapfig,booktabs}
+\usepackage{setspace}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage[pagestyles]{titlesec}
+\usepackage{geometry}
+\usepackage[bottom]{footmisc}
+\usepackage{longtable}
+\usepackage{tabularx}
+% Additional flexibility only for paragraphs that otherwise cannot fit long
+% literal command names in this compact book format.
+\emergencystretch=3em
+%\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[dutch,english]{babel}
+\usepackage{alphabeta}
+\usepackage{csquotes}
+\usepackage[backend=bibtex,style=alphabetic, labelnumber, 
+defernumbers=true,backref=true,url=false,
+doi=false, isbn=false]{biblatex} %mine
+
+\usepackage{listings} %mine
+\usepackage{pdfpages} %pdf pages
+\usepackage{ifthen}
+%\usepackage[yyyymmdd]{datetime}
+\usepackage[pages=some]{background} 
+% contour is unused by the active cover; omit its engine-specific driver.
+%\usepackage{eso-pic}
+
+% Load hyperref after math, language, bibliography and float packages so their
+% commands are patched consistently. Keep hyperfootnotes disabled as before.
+\usepackage[hyperfootnotes=false]{hyperref}
+
+%% Libraries
+\tcbuselibrary{theorems}
+\tcbuselibrary{skins}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{decorations.pathreplacing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithm for autoref
+\providecommand{\algorithmautorefname}{Algorithm}
+% Creates a LineComment for the Algorithm environment
+\algnewcommand{\LineComment}[1]{\State \(\triangleright\) #1}
+%%%
+% Page size
+%%
+%% Set the paper size to 17 by 24 cm, approximately halfway between A4 and A5.
+%\if@print
+%% In print mode we add a 3 mm bleed on the outside of the page.
+\geometry{
+	papersize = {176mm,246mm},
+	layoutsize = {170mm,240mm},
+	layoutoffset = {3mm,3mm},
+	bindingoffset = -3mm,
+	inner = 25mm,
+	outer = 20mm,
+	top = 25mm,
+	bottom = 22mm
+}
+% 2026-10-21: synchronize memoir's physical stock with geometry's final paper
+% size. memoir otherwise restores its default Letter PDF canvas at begin-document.
+% This hook also honours later personal or propositions geometry overrides.
+\AddToHook{begindocument/before}{%
+  \setstocksize{\paperheight}{\paperwidth}%
+}
+%\else
+%\geometry{papersize={170mm,240mm}}
+%\fi
+%% We decrease the margins slightly from the default (scale = 0.7).
+%\geometry{hscale=0.75,vscale=0.8}
+
+%Add pdf cover to the first page
+\backgroundsetup{contents={}} % Covers are drawn explicitly in Cover/BackCover.tex.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Hyper Reference Setup
+
+\hypersetup{
+	bookmarksopen=true,
+	hypertexnames=true, %hypertexnames=false,
+	colorlinks=true,% Set to false to disable coloring links
+	citecolor= black!25!MyDarkTeal, %magenta,% The color of citations
+	linkcolor=MyRed,% The color of references to document elements (sections, figures, etc)
+	urlcolor=Purple!80!black,%blue,% The color of hyperlinks (URLs)
+	%pdfstartview={FitV},
+	%unicode,
+	%breaklinks=true,
+}
+
+% Acronym links remain black using the package's public font hooks.
+% Preserve the original fonts, including any future smaller-font option.
+\NewCommandCopy{\ThesisOriginalAcsFont}{\acsfont}
+\NewCommandCopy{\ThesisOriginalAcfFont}{\acffont}
+\NewCommandCopy{\ThesisOriginalAcfsFont}{\acfsfont}
+\renewcommand*{\acsfont}[1]{%
+  \begingroup\hypersetup{hidelinks}\ThesisOriginalAcsFont{#1}\endgroup}
+\renewcommand*{\acffont}[1]{%
+  \begingroup\hypersetup{hidelinks}\ThesisOriginalAcfFont{#1}\endgroup}
+\renewcommand*{\acfsfont}[1]{%
+  \begingroup\hypersetup{hidelinks}\ThesisOriginalAcfsFont{#1}\endgroup}
+
+%Command for time
+%\newcommand{\ifnumber}[1]{\ifnum #1<9 {0#1}\else {#1}\fi} %Puts a 0 in front of numbers bellow 10
+%\newcommand{\savedate}{\number\year\_\ifnumber{\number\month}\_\ifnumber{\number\day}}
+%\newcommand{\chapterlocation}[1]{Chapters/Chapter_#1/Chapter_0#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%New title command
+
+\newcommand{\MyThesis}[6][]{
+	\newcommand{\thesistitleA}{#1}
+    \newcommand{\thesistitleB}{#2}
+	\newcommand{\thesissubtitle}{#3}
+	\newcommand{\thesisauthor}{#4}
+	\newcommand{\thesisauthorshort}{#5}
+	\newcommand{\thesisyear}{#6}
+}
+
+\newcommand{\MyDefense}[4][]{
+	\newcommand{\defenseweekday}{#1}
+	\newcommand{\defenseday}{#2}
+	\newcommand{\defensemonth}{#3}
+	\newcommand{\defensetime}{#4}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Marcio's commands:
+
+\newcommand{\myfont}{\sffamily} %Change the font of the text
+\renewcommand*\familydefault{\sfdefault} %Change the font of the Chapter, Section, etc
+
+\newcommand{\minsize}{0.85cm}
+\newcommand{\myfontsize}{\scriptsize}
+\newcommand{\myfontconfig}{\myfont \bfseries}
+
+\renewcommand{\sectionautorefname}{Section}  %Change \autoref{} from section to Section
+\renewcommand{\subsectionautorefname}{Subsection}
+\renewcommand{\chapterautorefname}{Chapter}
+
+\newcommand{\FigLocation}{Chapters/Chapter_0/fig/}
+\newcommand{\ChapLocation}{Chapters/Chapter_0/}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Colors
+
+\definecolor{DarkTeal}{HTML}{119E94}
+\definecolor{NewTeal}{HTML}{1EC6BA} 
+
+\definecolor{MyTeal}{HTML}{009999}
+\definecolor{MyDarkTeal}{HTML}{269C95}
+\definecolor{MyRed}{HTML}{A50026}
+
+\definecolor{MarineBlue}{HTML}{20628E} 
+\definecolor{LightMarineBlue}{HTML}{3684B7} 
+
+\definecolor{Green}{HTML}{158E19}
+\definecolor{LightGreen}{HTML}{21A825}
+
+\definecolor{Blue}{HTML}{07388c}%{003CFF} 
+\definecolor{LightBlue}{HTML}{256EFF}%{256EFF} 
+
+\definecolor{BlueishGreen}{HTML}{00CC66} 
+\definecolor{LightBlueishGreen}{HTML}{00FF80} 
+
+\definecolor{MusgGreen}{HTML}{66CC00} 
+\definecolor{LightMusgGreen}{HTML}{80FF00} 
+
+\definecolor{Purple}{HTML}{4C0DAB} 
+\definecolor{LightPurple}{HTML}{7B35E4}
+
+\definecolor{PurpleBlue}{HTML}{6666FF} 
+\definecolor{LightPurpleBlue}{HTML}{9999FF} 
+
+\definecolor{BlueSky}{HTML}{3399FF} 
+\definecolor{LightBlueSky}{HTML}{99CCFF} 
+
+\definecolor{GreyBlue}{HTML}{679eb5} 
+\definecolor{LightGreyBlue}{HTML}{77a3b5} 
+
+
+\definecolor{Red}{HTML}{C92020} 
+\definecolor{LightRed}{HTML}{E55555} 
+
+%new 2023
+\definecolor{CadetBlue}{HTML}{5F9EA0}
+\definecolor{CornflowerBlue}{HTML}{6495ED}
+\definecolor{EgyptianBlue}{HTML}{1434A4}
+
+
+%%
+
+\newcommand{\ColorBlue}{white!15!Blue}
+\newcommand{\ColorLightBlue}{LightBlue}
+\newcommand{\ColorGreen}{Green}
+\newcommand{\ColorLightGreen}{LightGreen}
+\newcommand{\ColorDarkTeal}{black!10!DarkTeal}
+\newcommand{\ColorNewTeal}{NewTeal}
+\newcommand{\ColorMarineBlue}{MarineBlue}
+\newcommand{\ColorLightMarineBlue}{LightMarineBlue}
+\newcommand{\ColorRed}{Red}
+\newcommand{\ColorLightRed}{LightRed}
+\newcommand{\ColorBlueishGreen}{black!10!BlueishGreen}
+\newcommand{\ColorLightBlueishGreen}{LightBlueishGreen}
+\newcommand{\ColorMusgGreen}{black!15!MusgGreen}
+\newcommand{\ColorLightMusgGreen}{LightMusgGreen}
+\newcommand{\ColorPurple}{Purple}
+\newcommand{\ColorLightPurple}{LightPurple}
+
+\newcommand{\ColorPurpleBlue}{black!20!PurpleBlue}
+\newcommand{\ColorLightPurpleBlue}{LightPurpleBlue}
+\newcommand{\ColorBlueSky}{black!17!BlueSky}
+\newcommand{\ColorLightBlueSky}{LightBlueSky}
+
+\newcommand{\ColorGreyBlue}{black!5!GreyBlue}
+\newcommand{\ColorLightGreyBlue}{LightGreyBlue}
+
+\newcommand{\ColorMyTeal}{white!10!MyTeal}
+
+%new 2023
+\newcommand{\ColorCadetBlue}{black!5!CadetBlue}
+\newcommand{\ColorLightCadetBlue}{white!88!CadetBlue}
+\newcommand{\ColorCornflowerBlue}{black!10!CornflowerBlue}
+\newcommand{\ColorLightCornflowerBlue}{white!93!CornflowerBlue}
+\newcommand{\ColorEgyptianBlue}{white!15!EgyptianBlue}
+\newcommand{\ColorLightEgyptianBlue}{white!92!EgyptianBlue}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other Colors
+%%
+\definecolor{PinkNude}{HTML}{F89D7D}
+\definecolor{LightTeal1}{HTML}{3e8680}
+\definecolor{LightTeal2}{HTML}{175650}
+\colorlet{LightTeal3}{white!30!LightTeal1}
+\newcommand{\HeadingColor}{LightTeal3}
+\newcommand{\TitleColor}{black!30!LightTeal2}
+\newcommand{\titlestyle}{\normalfont\LARGE\scshape}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Maths Color Boxes: Theorem, Propositions, Definitions
+
+\newtcbtheorem[number within=section]{theorem}{Theorem}
+{
+	theorem style = plain apart, enhanced, frame hidden,
+	boxrule=2mm,titlerule=0mm,toptitle=1mm,bottomtitle=1mm,
+	fonttitle=\bfseries\large, fontupper=\normalsize,
+	coltitle=LightTeal2, colbacktitle=white!80!LightTeal2,
+	colback=white!90!LightTeal2
+}{thrm}
+\newtcbtheorem[number within=section]{proposition}{Proposition}
+{
+	theorem style = plain apart, enhanced, frame hidden,
+	boxrule=2mm,titlerule=0mm,toptitle=1mm,bottomtitle=1mm,
+	fonttitle=\bfseries\large, fontupper=\normalsize,
+	coltitle=LightTeal2, colbacktitle=white!80!LightTeal2,
+	colback=white!90!LightTeal2
+}{prop}
+\newtcbtheorem[number within=section]{definition}{Definition}
+{
+	theorem style = plain apart, enhanced, frame hidden, breakable,
+	boxrule=2mm,titlerule=0mm,toptitle=1mm,bottomtitle=1mm,
+	fonttitle=\bfseries\large, fontupper=\normalsize,
+	coltitle=black!60!PinkNude, colbacktitle=white!70!PinkNude,
+	colback=white!80!PinkNude
+}{def}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page Colors
+%%
+\newcounter{chapCnt}
+\setcounter{chapCnt}{-1} %Count Chapters
+
+
+\definecolor{ThumbEnd}{HTML}{f5cac3}
+\newcommand{\ThumbColIdx}[1]{white!2#1!\HeadingColor}
+
+%\newcommand\ThumbColor{%
+%	\ifcase \thechapCnt \TitleColor!0!ThumbEnd%
+%	                   \or \TitleColor!14.2857!ThumbEnd%
+%	                   \or \TitleColor!28.5714!ThumbEnd%
+%	                   \or \TitleColor!42.8571!ThumbEnd%
+%	                   \or \TitleColor!57.1429!ThumbEnd%
+%	                   \or \TitleColor!71.4286!ThumbEnd%
+%	                   \or \TitleColor!85.7143!ThumbEnd%
+%	                   \or \TitleColor!100!ThumbEnd%
+%	                   \else \TitleColor \fi}
+                   
+
+%Change 25/07/23
+                   
+%\newcommand{\ThumbColor}[1]{%
+%	\ifcase #1 \ColorDarkTeal %1 
+%	\or \ColorMarineBlue %2
+%	\or \ColorGreyBlue %3
+%	\or \ColorBlueSky %4
+%	\or \ColorBlue %5
+%	\or \ColorPurpleBlue %4
+%	%\or \ColorRed
+%	\or \ColorGreen
+%	\or \ColorPurple
+%	\else \ColorMyTeal \fi}
+
+%\newcommand{\absColor}[1]{%
+%	\ifcase #1 \ColorNewTeal %3 
+%	\or \ColorLightMarineBlue %2
+%	\or \ColorLightGreyBlue %5
+%	\or \ColorLightBlueSky %6
+%	\or \ColorLightBlue %1
+%	\or \ColorLightPurpleBlue %4
+%	%\or \ColorLightRed
+%	\or \ColorLightGreen
+%	\or \ColorLightPurple
+%	\else \ColorMyTeal \fi}
+
+ \newcommand{\ThumbColor}[1]{%
+	\ifcase #1 \ColorDarkTeal %1
+    \or \ColorCadetBlue %2
+    \or \ColorGreyBlue %3
+    \or \ColorMarineBlue %4
+	\or \ColorBlueSky %5
+    \or \ColorCornflowerBlue %6
+    \or \ColorEgyptianBlue %7
+	\or \ColorBlue %8
+	\or \ColorPurpleBlue 
+	%\or \ColorRed
+	\or \ColorGreen
+	\or \ColorPurple
+	\else \ColorMyTeal \fi}
+
+\newcommand{\absColor}[1]{%
+	\ifcase #1 \ColorNewTeal %1
+    \or \ColorLightCadetBlue %2
+    \or \ColorLightGreyBlue %3
+    \or \ColorLightMarineBlue %4
+	\or \ColorLightBlueSky %5
+    \or \ColorLightCornflowerBlue %6
+    \or \ColorLightEgyptianBlue %7
+	\or \ColorLightBlue %8
+	\or \ColorLightPurpleBlue 
+	%\or \ColorLightRed
+	\or \ColorLightGreen
+	\or \ColorLightPurple
+	\else \ColorMyTeal \fi}
+
+%Marcio' comands
+\newcommand{\ColorTheme}{\ThumbColor{\thechapCnt}}
+% Chapter number is drawn before chapCnt advances; derive its color from that
+% counter instead of maintaining a second counter that can drift out of sync.
+\newcommand{\NumberChapterColor}{\ThumbColor{\numexpr\value{chapCnt}+1\relax}}
+
+%%%%%%%%%%% THUMB - MARK ON THE SIDE
+
+\newlength\thumbheight
+\setlength\thumbheight{35pt}%mine %{75pt} original
+\newlength\thumbedge
+\setlength\thumbedge{9.5pt}%mine  %{2.5pt} original
+\newlength\thumbhspace
+\setlength\thumbhspace{40.0pt}
+\newlength\thumbvspace
+%\setlength\thumbvspace{2.25cm}
+\newcommand{\ThesisChapterCount}{8} % Number of numbered chapters; see Chapter 6.
+\setlength\thumbvspace{(\textheight - 1cm - \thumbheight/2)/\ThesisChapterCount}
+
+%%Draw the thumb
+
+\newcommand*\lthumb{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\coordinate (top margin) at (0pt,1in+\topmargin+\headheight+\headsep);
+	\coordinate (left margin) at (1in+\evensidemargin,0pt);
+	%% Calculate the corners of the thumb index based on the current
+	%% chapter number.
+	\coordinate (top left) at ($(current page.north west)-(top margin)-(0pt,\thechapCnt\thumbvspace + 0.5cm)$);
+	\coordinate (bottom right) at ($(top left)+(left margin)-(\thumbhspace,\thumbheight)$);
+	%% Shift the left edge to prevent the rounded corner from showing.
+	\coordinate (top left) at ($(top left)-(\thumbedge,0pt)$);
+	%% Draw the thumb index.
+	\fill[fill=\ColorTheme,rounded corners=\thumbedge](top left) rectangle (bottom right);
+	\end{tikzpicture}%
+}
+\newcommand*\rthumb{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\coordinate (top margin) at (0pt,1in+\topmargin+\headheight+\headsep);
+	\coordinate (right margin) at (1in+\evensidemargin,0pt);
+	%% Calculate the corners of the thumb index based on the current
+	%% chapter number.
+	\coordinate (top right) at ($(current page.north east)-(top margin)-(0pt,\thechapCnt\thumbvspace+0.5cm)$);
+	\coordinate (bottom left) at ($(top right)-(right margin)-(-\thumbhspace,\thumbheight)$);
+	%% Shift the left right to prevent the rounded corner from showing.
+	\coordinate (top right) at ($(top right)+(\thumbedge,0pt)$);
+	%% Draw the thumb index.
+	\fill[fill=\ColorTheme,rounded corners=\thumbedge](top right) rectangle (bottom left);
+	\end{tikzpicture}%
+}
+
+
+%%%%%%%%%%% HEADERS AND FOOT NOTES - TOP AND BOTTOM OF THE PAGE
+
+%\makeoddfoot{page style name}{stuff in the left}{stuff in the middle}{stuff in the right}
+
+%Marcio command
+%Create the style of the page number
+%Style 1
+%\newcommand{\PageNumberStyle}{              
+%	\node(O)[fill=\ColorTheme, circle,minimum size = \minsize] %circle
+%	{\textcolor{white}{\myfontconfig \myfontsize\thepage}}
+%	}
+%Style 2
+
+%%%%%%
+%My Page Circle (For numbering)
+
+%Black Color
+%\newcommand{\PageNumberStyle}{              
+%	\node(O)[draw=\ColorTheme,very thick, circle,minimum size = \minsize, fill=\absColor{\thechapCnt}!25!white] %circle
+%	{\textcolor{black}{\myfontconfig \myfontsize\thepage}}
+%}
+
+%White Color
+\newcommand{\PageNumberStyle}{              
+	\node(O)[draw=\ColorTheme,very thick, circle,minimum size = \minsize, fill=\ColorTheme] %circle
+	{\textcolor{white}{\myfontconfig \myfontsize\thepage}}
+}
+%%%%%%
+\makepagestyle{mypagestyle}
+%Number  in Chapter First Page
+\makeoddhead{plain}{}{}{}
+%PageNumber New Chaper
+%\makeoddfoot{plain}{}{\sffamily\bfseries\textcolor{\TitleColor}{\thepage}}{} %Original
+%%%Marcio
+\makeoddfoot{plain}{}{}{\myfontconfig \textcolor{\TitleColor}{{\begin{tikzpicture}[baseline=(O.base)]
+				\PageNumberStyle;
+		\end{tikzpicture}}
+}}
+
+
+%%%%
+
+%\makeheadrule{mypagestyle}{\textwidth}{0.5pt} %original
+%\makeheadfootruleprefix{mypagestyle}{\color{\HeadingColor}\vspace{-0.5pt}}{\color{\HeadingColor}} % old - make line
+\makeheadrule{mypagestyle}{\textwidth}{1.5pt}
+\makeheadfootruleprefix{mypagestyle}{\color{\ColorTheme}\vspace{-0.1pt}}{\color{\ColorTheme}}
+
+\makeevenhead{mypagestyle}{\textcolor{black}{\leftmark}}{}{} 
+\makeevenfoot{mypagestyle}{\lthumb\hspace{-1mm}\begin{tikzpicture}[baseline=(O.base)]
+	%\node(O)[fill=\HeadingColor, rounded corners = 2.5,minimum size = 0.85cm] %original square
+	\PageNumberStyle; %Number in page
+	\end{tikzpicture}}{}{}
+
+\makeoddhead{mypagestyle}{}{}{\textcolor{black}{\rightmark}} 
+\makeoddfoot{mypagestyle}{}{}{\begin{tikzpicture}[baseline=(O.base)]
+	%\node(O)[fill=\HeadingColor, rounded corners = 2.5,minimum size = 0.85cm] %original square
+	\PageNumberStyle;
+	\end{tikzpicture}\hspace{-1mm}\rthumb}
+
+%\renewcommand{\chaptermark}[1]{ \markboth{\sffamily\bfseries \thechapter. #1}{} } %Original
+%\renewcommand{\sectionmark}[1]{ \markright{\sffamily\bfseries\thesection. #1}{} } %Original
+\renewcommand{\chaptermark}[1]{ \markboth{\myfontconfig Chapter \thechapter: #1}{} }
+\renewcommand{\sectionmark}[1]{ \markright{\myfontconfig Section \thesection : #1}{} }
+
+
+%%%%%%%%%%% APENDIX CHAPTERS STYLE
+
+\makepagestyle{notationstyle}
+\makeheadrule{notationstyle}{\textwidth}{1.5pt}
+\makeheadfootruleprefix{notationstyle}{\color{\ColorTheme}\vspace{-0.1pt}}{\color{\ColorTheme}}
+
+\makeevenhead{notationstyle}{\leftmark}{}{} 
+\makeevenfoot{notationstyle}{\hspace{-1mm}\begin{tikzpicture}[baseline=(O.base)]
+	%\node(O)[fill=\HeadingColor, rounded corners = 2.5,minimum size = 0.85cm]  %original square
+	\PageNumberStyle;
+	\end{tikzpicture}}{}{}
+
+\makeoddhead{notationstyle}{}{}{\leftmark} 
+
+\makeoddfoot{notationstyle}{}{}{\begin{tikzpicture}[baseline=(O.base)]
+	%\node(O)[fill=\HeadingColor, rounded corners = 2.5,minimum size = 0.85cm] %original square
+	\PageNumberStyle;
+	\end{tikzpicture}\hspace{-1mm}}
+
+%%%%%%%%%%%%%% FOOTNOTES
+% One fixed separator for ordinary and publication notes. Neither helper changes
+% shared page-output formatting; publication notes remain unnumbered.
+\setfootnoterule{3pt}{2in}{0.4pt}
+\DeclareRobustCommand{\pubfootnote}[1]{%
+  \begingroup
+    \renewcommand{\thefootnote}{}%
+    \footnotetext[0]{#1}% No mark and no change to the ordinary footnote counter.
+  \endgroup
+}
+\DeclareRobustCommand{\myfootnote}[1]{\footnote{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter's style
+%%
+\makechapterstyle{thesis}{
+		
+		\setlength{\beforechapskip}{10pt}
+		\setlength{\afterchapskip}{1.5cm}
+		\setlength{\midchapskip}{1cm}
+	\renewcommand*{\printchaptername}{}
+	\renewcommand*{\chapnumfont}{\normalfont \myfontconfig \huge}
+	\renewcommand*{\printchapternum}{       %Print number in the first page of the chapter
+		%\flushright %original at the right corner
+		\centering %Center without opening an unclosed center environment
+		%Beginning of chapter
+		\begin{tikzpicture}
+		%\draw[fill,color=\HeadingColor,rounded corners = 5] (0,0) rectangle (2cm,2cm); %original rectangle
+		
+		%Mine
+		\draw[fill,color=\NumberChapterColor,rounded corners = 15] (0,0) rectangle (2cm,2cm); 
+		\draw[color=white] (1cm,1cm) node {\chapnumfont \thechapter }; %original
+		
+		\end{tikzpicture}
+		\stepcounter{chapCnt}
+	}
+	%\renewcommand*{\chaptitlefont}{\normalfont \myfontconfig \Huge \color{\TitleColor}} %original
+	\renewcommand*{\chaptitlefont}{\normalfont \myfontconfig \Huge \color{\ColorTheme!50!black}}
+	%\renewcommand*{\printchaptertitle}[1]{\flushright\chaptitlefont##1} %original - chapter at right
+	\renewcommand*{\printchaptertitle}[1]{\centering \chaptitlefont##1} %Chapter title in the middle
+}
+\chapterstyle{thesis}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter's abstract style
+%%
+%theorem style = plain apart, enhanced, frame hidden,
+%boxrule=2mm,titlerule=0mm,toptitle=1mm,bottomtitle=1mm,
+%fonttitle=\bfseries\large, fontupper=\normalsize,
+%coltitle=LightTeal2, colbacktitle=white!80!LightTeal2,
+%colback=white!90!LightTeal2
+
+%%%%%%%%%%%%% CHAPTER ABSTRACT:
+\newtcolorbox{absbox}
+{
+	frame hidden,
+	colback= white!90!\absColor{\thechapCnt}, %white!90!LightTeal2,
+	fonttitle=\scshape, coltitle=\ColorTheme,%LightTeal2,
+	fontupper=\small,
+	before upper={\parindent15pt},
+	colbacktitle=white!85!\absColor{\thechapCnt},
+	enhanced,
+	attach boxed title to top center={yshift=-2mm},title=Abstract,
+	boxed title style= {arc=0pt, outer arc=0pt, boxrule=0pt, after skip = 1cm}
+}
+
+\abstractrunin % Places the abstract word before the text else it is place above and aligned with \absnamepos
+% 'Abstract' same formatting as float caption
+\setlength{\abstitleskip}{0pt}
+\renewcommand{\abstractnamefont}{\normalfont\small\scshape}
+\abslabeldelim{\;--\;}
+%\setlength{\absleftindent}{\specialparindent}
+%\setlength{\absrightindent}{\specialparindent}
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape}
+\let\oldendabstract\endabstract
+\def\endabstract{%
+	\oldendabstract
+	\fancybreak{\rule{0pt}{\onelineskip}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fonts
+%%
+%\newcommand{\SectionColor}{\TitleColor}
+\newcommand{\SectionColor}{\ColorTheme!30!black}
+
+\titleformat{\section}
+%original - with extra dot
+%{\normalfont\fontsize{13}{0}\sffamily\bfseries\color{\TitleColor}}{\textcolor{\TitleColor}{\thesection.}} 
+{\normalfont\fontsize{13}{16}\myfontconfig \color{\SectionColor}}{\textcolor{\SectionColor}{\thesection}} 
+{1em}{} 
+\titleformat{\subsection}
+%original - with extra dot
+%{\normalfont\fontsize{11}{0}\sffamily\bfseries\color{\TitleColor}}{\textcolor{\TitleColor}{\thesubsection.}}
+{\normalfont\fontsize{11}{14}\myfontconfig \color{\SectionColor}}{\textcolor{\SectionColor}{\thesubsection}}
+{1em}{} 
+\titleformat{\subsubsection} {\normalfont \myfontconfig \color{\SectionColor}}{}{1em}{}
+
+
+
+
+% TEMPLATE CONTROLS. Chapter 6 explains these and the original design above.
+% Keep the original page/heading/theme helpers; hide only the edge markers.
+\newif\ifThesisThumbs
+\ThesisThumbstrue
+\let\ThesisLeftThumb\lthumb
+\let\ThesisRightThumb\rthumb
+\renewcommand{\lthumb}{\ifThesisThumbs\ThesisLeftThumb\fi}
+\renewcommand{\rthumb}{\ifThesisThumbs\ThesisRightThumb\fi}
+% Source examples are literal: macros inside listings are never executed.
+\lstset{language=[LaTeX]TeX,basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,
+  frame=single,rulecolor=\color{black!15},backgroundcolor=\color{black!2},
+  xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=1em,belowskip=1em}

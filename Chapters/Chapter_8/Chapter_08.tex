@@ -1,0 +1,76 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{From example to your thesis}\label{chap:08}
+\renewcommand{\FigLocation}{Chapters/Chapter_8/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_8/}
+\begin{absbox}
+Replace the instructional content gradually, verify the complete document and prepare a clean source release. The structure can stay familiar while the writing and design become your own.
+\end{absbox}
+
+\section{A practical order of work}
+\begin{enumerate}[itemsep=5pt]
+\item Edit \texttt{ThesisDetails.tex}: titles in both languages, author, date,
+supervisors, identifiers and affiliation. Keep the real rector details required
+for your defence rather than substituting an invented office holder.
+\item Update committee rows and funding in \texttt{Title\_Preamb.tex}; replace
+the summaries and acknowledgements. Remove the dedication if unwanted.
+\item Replace chapter text and chapter abstracts while keeping the folders and
+their figure locations. Add your actual references and publications to the
+appropriate databases.
+\item Declare your symbols and acronyms centrally. Remove unused example
+declarations once their role is clear; do not remove the registry implementation.
+\item Choose a palette, font and cover design, then check their effect on every
+page style. Confirm the print geometry with your printer.
+\item Replace or remove the illustrative propositions and obtain the required
+approvals for the real thesis and its formal pages.
+\end{enumerate}
+
+\section{Checks after a complete build}
+Read the log for undefined commands, missing files, unresolved citations,
+duplicate destinations and rerun requests. Investigate overfull boxes rather
+than assuming they are harmless. Check that figures and captions remain legible
+at the final trim size, tables do not run into margins and long headings fit.
+
+Follow a symbol link to the global list and its page link back to the first
+occurrence. Confirm that an unused declaration stays out of the list, that
+abbreviations expand as intended, and that your publication entries appear only
+in Publications. Check the table of contents after the final pagination pass.
+The small source checker in \texttt{tests} catches several structural mistakes,
+but it cannot verify typography or actual PDF destinations.
+
+\section{Remove example identity and data}
+Search for Alex Morgan, Example Press, Example University, fictional publication
+titles, \texttt{20XX}, the placeholder ISBN pattern and the template's chapter
+titles. Replace the actual content fields; keep explanatory occurrences only
+if you are distributing this guide itself. Do not copy the sample results table
+or methodological claims into a real thesis as research findings.
+
+The NASA photograph includes a credit file. Keep that file if you keep the
+image; for other images, record the creator, original source and reuse terms.
+The UT logo retains its institutional identity status. References and sample
+publications are distinct even when both appear near the end of the book.
+
+\section{Share a clean template repository}
+Publish the contents of the template folder as the repository root. Keep
+\texttt{Chapters}, each existing \texttt{fig} directory, \texttt{References} and
+\texttt{tests} in their current locations. The repository README gives a short
+entry point; the thesis chapters provide the detailed examples. A released
+example PDF can be useful after a successful build, but it is a generated
+deliverable, not the source of the layout.
+
+The inherited source attributes layout work to M\'arcio Luiz Lima de Oliveira
+and V.\ el Hakim. The template source and documentation are distributed under
+the LaTeX Project Public License, version 1.3c. Preserve the credits and follow
+the licence conditions when sharing modifications. \texttt{LICENSE} contains
+the complete licence, and \texttt{MANIFEST.txt} lists the covered files. The
+sample book's copyright paragraph describes the example thesis;
+\texttt{LICENSING.txt} explains the separate status of university wording,
+the photograph and the logo.
+
+For future changes, describe the affected user-facing behaviour and verify the
+smallest relevant example. Update this guide when adding a public helper so
+the example document remains the explanation of its own layout.

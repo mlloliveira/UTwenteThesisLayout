@@ -1,0 +1,41 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+% Personal details shared by main.tex and propositions.tex.
+% Chapter 2 explains the argument order. Call MyThesis/MyDefense only once.
+\MyThesis[A Thesis You Can Make Your Own]
+{A Guide to This Layout}
+{Writing, Organising and Personalising a Doctoral Thesis}
+{Marcio L. Lima de Oliveira} %Your name
+{M.~Lima~de~Oliveira}        %Your name
+{20XX}
+\MyDefense[Monday]{XX}{Month}{XX:XX}
+\newcommand{\thesistitle}{\thesistitleA\space\thesistitleB}
+\newcommand{\thesistitleDutch}{Een proefschrift naar eigen inzicht}
+\newcommand{\thesissubtitleDutch}{Handleiding voor het schrijven en vormgeven van een proefschrift}
+\newcommand{\defensedate}{XX/XX/20XX}
+\newcommand{\isbn}{XXX-XX-XXX-XXXX-X}
+\newcommand{\isbnd}{XXX-XX-XXX-XXXX-X}
+\newcommand{\doi}{10.3990/1.XXXXXXXXXXXXX}
+% Official name in Annex 3 of the regulations effective 1 January 2026.
+% Verify the required name and titles with the Support Office before printing.
+\newcommand{\rectorname}{prof.\ dr.\ ir.\ A.~Veldkamp}
+\newcommand{\promotorname}{prof.\ dr.\ J.~Taylor}
+\newcommand{\copromotorname}{dr.\ R.~Chen}
+\newcommand{\chairname}{prof.\ dr.\ S.~de~Vries}
+\newcommand{\coverdesigner}{John Doe}
+\newcommand{\printername}{Example Press, Enschede}
+\newcommand{\layoutdesigner}{M.~Lima~de~Oliveira \& V.~el~Hakim}
+\newcommand{\researchgroup}{Example Research Group}
+\newcommand{\facultyname}{Faculty of Electrical Engineering, Mathematics and Computer Science}
+% Empty paths select the editable TikZ covers; complete artwork may go here.
+% For example: Chapters/Chapter_0/fig/cover.pdf
+\newcommand{\coverlocation}{}
+\newcommand{\backcoverlocation}{}
+% Optional personal overrides go below; Chapter 6 gives complete recipes.
+% \ThesisThumbsfalse
+\hypersetup{pdftitle={\thesistitle},pdfauthor={\thesisauthor},
+  pdfsubject={An instructional thesis layout with example content}}

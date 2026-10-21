@@ -1,0 +1,63 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter*{Notation and command reference}
+\addcontentsline{toc}{chapter}{Notation and command reference}
+Registered variables are in the preceding List of Symbols. This page describes
+general mathematical conventions and the remaining public helpers. Use
+\texttt{MathOperators.tex} to adjust these definitions consistently.
+
+\section*{Mathematical helpers}
+\begin{longtable}{@{}p{0.35\textwidth}p{0.59\textwidth}@{}}
+\toprule Command & Meaning or rendered convention\\\midrule\endhead
+\verb|\func{f}{X}{Y}| & $\func{f}{X}{Y}$, a function signature.\\
+\verb|\norm{x}{p}| & $\norm{x}{p}$; empty second argument omits the index.\\
+\verb|\Abs{x}| & $\Abs{x}$, absolute value.\\
+\verb|\Set{x}{P(x)}| & $\Set{x}{P(x)}$, set-builder notation.\\
+\verb|\ctrans{a}|, \verb|\dtrans| & $p\ctrans{a}q$, $p\dtrans q$, labelled and starred arrows.\\
+\verb|\argmin|, \verb|\argmax| & $\argmin_x f(x)$, $\argmax_x f(x)$; limits-style operators.\\
+\verb|\diag|, \verb|\Tr| & $\diag(A)$, $\Tr(A)$; diagonal and trace.\\
+\verb|\Span|, \verb|\Ker|, \verb|\Ran| & $\Span(S)$, $\Ker(A)$, $\Ran(A)$; span, kernel and range.\\
+\verb|\Dom|, \verb|\supp| & $\Dom(f)$, $\supp(f)$; domain and support.\\
+\verb|\Sign|, \verb|\abs| & $\Sign(x)$, $\abs(x)$; sign and bold entrywise absolute-value operator.\\
+\verb|\Lip|, \verb|\Aggr| & $\Lip(f)$, $\Aggr(S)$; inherited upright operator names. Define their mathematical meaning in your text.\\
+\verb|\Skew|, \verb|\Prod| & $\Skew(A)$, $\Prod(S)$; named operators, not the large product symbol $\prod$.\\
+\verb|\Vol|, \verb|\Aff|, \verb|\Conv| & $\Vol(S)$, $\Aff(S)$, $\Conv(S)$; volume, affine hull and convex hull.\\
+\verb|\Int|, \verb|\Cl| & $\Int(S)$, $\Cl(S)$; interior and closure.\\
+\verb|\Aconv| & $\Aconv(S)$; the inherited command prints \textup{dconv}. Change or explain that convention before using it.\\
+\verb|\Orth{n}|, \verb|\So{n}| & $\Orth{n}$, $\So{n}$; orthogonal and special orthogonal groups.\\
+\bottomrule
+\end{longtable}
+The delimiter helpers accept an optional explicit size as shown in
+\autoref{chap:04}. Their underlying \texttt{ThesisNormDelimiter},
+\texttt{ThesisAbsDelimiter} and \texttt{ThesisSetDelimiter} commands are
+\texttt{mathtools} paired delimiters. Prefer the documented wrappers so the
+legacy argument order remains consistent.
+
+\section*{Layout helper index}
+\begin{longtable}{@{}p{0.39\textwidth}p{0.55\textwidth}@{}}
+\toprule Helper & Where it is explained\\\midrule\endhead
+\verb|\MyThesis|, \verb|\MyDefense| & Shared metadata, \autoref{chap:02}.\\
+\verb|\FigLocation|, \verb|\ChapLocation| & Chapter-relative path prefixes, \autoref{chap:07}.\\
+\verb|\DeclareThesisSymbol|, \verb|\mathsymbols| & Symbol declarations, \autoref{chap:04}.\\
+\verb|\PrintThesisSymbols| & Global list output, \autoref{chap:07}.\\
+\verb|\pubfootnote|, \verb|\myfootnote| & Publication and ordinary notes, \autoref{chap:05}.\\
+\verb|\LineComment| & Algorithm comment, \autoref{chap:03}.\\
+\texttt{absbox}, \texttt{theorem}, \texttt{definition}, \texttt{proposition} & Chapter summaries and mathematical boxes, Chapters 4 and 6.\\
+\verb|\ThumbColor|, \verb|\absColor| & Main colour and tint per chapter, \autoref{chap:06}.\\
+\verb|\ColorTheme|, \verb|\NumberChapterColor| & Current and opening-number colour, \autoref{chap:06}.\\
+\verb|\HeadingColor|, \verb|\TitleColor|, \verb|\SectionColor| & Heading accents, \autoref{chap:06}.\\
+\verb|\PageNumberStyle|, \verb|\minsize|, \verb|\myfontsize| & Page-number shape and text, \autoref{chap:06}.\\
+\verb|\myfont|, \verb|\myfontconfig| & Typeface and shared weight, \autoref{chap:06}.\\
+\verb|\ThesisChapterCount|, \verb|\ThesisThumbsfalse| & Marker spacing and visibility, \autoref{chap:06}.\\
+\texttt{mypagestyle}, \texttt{notationstyle}, \texttt{plain} & Main pages, front/back matter and chapter-opening pages.\\
+\bottomrule
+\end{longtable}
+The retained \verb|\ThumbColIdx|, \verb|\titlestyle| and \texttt{ThumbEnd}
+definitions belong to earlier design variants and are not used by the active
+page styles. Editing them will not change the current design. The
+\texttt{abstract} environment's run-in formatting is also retained; the example
+front summaries use unnumbered chapters and chapter summaries use \texttt{absbox}.

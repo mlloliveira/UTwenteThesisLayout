@@ -1,0 +1,164 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{Symbols, equations and acronyms}\label{chap:04}
+\renewcommand{\FigLocation}{Chapters/Chapter_4/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_4/}
+\begin{absbox}
+Declare notation centrally and introduce it where the explanation reads naturally. The global list of symbols and the abbreviation list use first-use information across the whole thesis.
+\end{absbox}
+
+\section{Declare a command before using it}
+Add a symbol to \texttt{DeclareSymbols.tex}, below the registry implementation.
+Choose a descriptive command name containing letters; do not overwrite a
+standard command such as \verb|\alpha| or \verb|\epsilon|.
+\begin{lstlisting}
+\DeclareThesisSymbol{sampleInput}{x}{Input value}
+\DeclareThesisSymbol{sampleOutput}{y}{Output value}
+\DeclareThesisSymbol{sampleSlope}{a}{Linear model coefficient}
+\DeclareThesisSymbol{sampleOffset}{b}{Linear model offset}
+\end{lstlisting}
+These declarations already exist in the supplied file. Once registered,
+\verb|\sampleInput| can be used in text or maths. A declaration in the preamble
+is a programming step; the explanation of that variable in your prose may
+come before or after its first equation. An undefined command still cannot be
+used before it has been registered with TeX.
+
+\section{First appearances inside an equation}
+The next equation deliberately uses four registered symbols for the first time:
+\begin{equation}
+  \sampleOutput = \sampleSlope\sampleInput + \sampleOffset.
+  \label{eq:linear}
+\end{equation}
+Here \sampleInput\ is the input, \sampleOutput\ is the output, \sampleSlope\ is
+the slope and \sampleOffset\ is the offset. These explanations follow the
+equation by choice. Each symbol links to the global list, and its list entry
+links back to the first typeset occurrence recorded on a shipped page.
+\begin{lstlisting}
+\begin{equation}
+  \sampleOutput = \sampleSlope\sampleInput + \sampleOffset.
+  \label{eq:linear}
+\end{equation}
+Here \sampleInput\ is the input and \sampleOutput\ is the output.
+\end{lstlisting}
+Use an ordinary equation label alongside the symbol commands. Symbol tracking
+does not require a \verb|\label| for each variable. The historical interface
+\verb|\mathsymbols{4}{sampleInput}{x}{Input value}| also works when used
+\emph{instead of} the corresponding new declaration. Its chapter argument is
+ignored: the list is global and follows declaration order, not chapter order
+or alphabetical order. Register each command once.
+
+\section{Aligned equations, vectors and delimiters}
+\begin{align}
+  \sampleVector &= (x_1,\ldots,x_{\sampleCount})^{\mathsf T},\label{eq:vector}\\
+  \sampleError &= \norm{\sampleMatrix\sampleVector-\sampleVector}{2}.
+  \label{eq:residual}
+\end{align}
+The example in \eqref{eq:residual} assumes a compatible square matrix; its
+purpose is to show typography. The dimension notation is explained here after
+the display: \sampleCount\ is the number of observations, \sampleVector\ is
+the observation vector, \sampleMatrix\ is a linear transformation and
+\sampleError\ is the residual magnitude.
+\begin{lstlisting}
+\norm{x}{2}          % automatically sized norm, with subscript 2
+\norm{x}{}           % norm without a subscript
+\norm[\big]{x}{2}    % explicit delimiter size
+\Abs{u-v}           % automatically sized absolute value
+\Abs[\Big]{u-v}     % explicit size
+\Set{x}{x>0}        % fixed-size set braces by default
+\Set[\Big]{x}{x>0}  % larger set braces
+\func{f}{X}{Y}      % f : X -> Y
+\end{lstlisting}
+An optional size is useful in multi-line displays because a \verb|\left|
+delimiter cannot be opened on one alignment row and closed on another.
+The legacy norm always takes two mandatory arguments, including an empty
+second argument when no subscript is wanted. Do not write \verb|\norm{x}|.
+\[
+  \func{f}{\mathbb R}{\mathbb R},\qquad
+  f(x)=\Abs{x},\qquad X=\Set{x\in\mathbb R}{x>0}.
+\]
+\texttt{MathOperators.tex} also provides upright operators such as
+\verb|\argmin|, \verb|\argmax|, \verb|\diag| and \verb|\Tr|.
+The notation appendix lists the full helper vocabulary. Use \verb|\mathrm{d}|
+for a differential and a consistent vector convention throughout the thesis.
+
+\section{What the list records}
+Only used registered symbols appear in the list. The declared
+\verb|\unusedExample| is deliberately never executed and should be absent.
+Plain letters such as \verb|x| in an equation are ordinary maths, not tracked
+symbols. A code listing does not count as a use. Table-of-contents replays,
+glossary rows and temporary equation measurements do not create first-use
+records. Float placement can affect which page is first, so let references
+stabilise after changing figures or captions.
+
+The list reflects the previous complete compilation. Rebuild the complete
+thesis after deleting uses or working with \verb|\includeonly|. There is no
+separate formal-definition command: the default keeps the existing first-use
+behaviour. Avoid symbols in headings when plain words are clearer. If a heading
+needs mathematics, supply readable bookmark text:
+\begin{lstlisting}
+\section{Behaviour of \texorpdfstring{$\sampleInput$}{the input}}
+\end{lstlisting}
+
+\section{Define and use acronyms}\label{sec:acronyms}
+Define abbreviations in \texttt{Chapters/Chapter\_Appendix/Acronyms.tex}:
+\begin{lstlisting}
+\begin{acronym}[NASA]
+  \acro{UT}{University of Twente}
+  \acro{PDF}{Portable Document Format}
+  \acro{API}{application programming interface}
+\end{acronym}
+\end{lstlisting}
+The optional \texttt{NASA} specifies the width reserved for the short forms;
+choose the widest abbreviation in your own list. Definitions located in the
+back matter become available to earlier pages through auxiliary files, so an
+initial run may show unresolved acronyms. Complete the usual rebuild sequence.
+
+The first \verb|\ac{UT}| produces \ac{UT}; the next produces \ac{UT}.
+For another example, \ac{API} becomes \ac{API} on later use. The main commands are:
+\begin{description}
+\item[\texttt{\string\ac\{key\}}] Full form on first use, short form afterwards.
+\item[\texttt{\string\acs\{key\}}] Short form, such as \acs{PDF}.
+\item[\texttt{\string\acl\{key\}}] Long form, such as \acl{PDF}.
+\item[\texttt{\string\acf\{key\}}] Full form regardless of earlier use.
+\item[\texttt{\string\acp\{key\}}] Plural, with the same first-use convention.
+\item[\texttt{\string\ac*\{key\}}] An untracked use; a star is also available on
+the explicit short, long and full forms.
+\end{description}
+For irregular plurals add \verb|\acroplural{key}[short plural]{long plural}|.
+For example the sample \texttt{API} definition provides \acp{API}.
+The options \texttt{printonlyused} and \texttt{withpage} select a global list of used
+abbreviations with page information. \verb|\acreset{key}| or
+\verb|\acresetall| resets first-use expansion if you intentionally want a fresh
+introduction; the template does not reset the list at every chapter.
+Remove \texttt{printonlyused} only if you want unused definitions printed too.
+
+\section{Theorems, definitions and propositions}
+\begin{definition}{Nonnegative input}{nonnegative}
+An input is nonnegative when $x\geq 0$.
+\end{definition}
+\begin{theorem}{Nonnegative square}{square}
+For every real number $x$, $x^2\geq 0$.
+\end{theorem}
+\begin{proof}
+If $x\geq0$, the product $x\cdot x$ is nonnegative. If $x<0$, it is the
+product of two negative numbers and is positive.
+\end{proof}
+\begin{proposition}{Equality case}{zero}
+A real number satisfies $x^2=0$ if and only if $x=0$.
+\end{proposition}
+\begin{lstlisting}
+\begin{theorem}{Nonnegative square}{square}
+  For every real number $x$, $x^2\geq 0$.
+\end{theorem}
+Theorem~\ref{thrm:square}
+\end{lstlisting}
+These boxed environments take a title and a label suffix. Their automatic
+prefixes are \texttt{thrm:}, \texttt{def:} and \texttt{prop:}; the suffix alone
+is not a complete reference. They are numbered within sections. The
+\texttt{definition} box can break across pages; keep the other two short or add
+\texttt{breakable} to their \texttt{newtcbtheorem} styles when needed.
+The boxed mathematical proposition is independent of the propositions insert.

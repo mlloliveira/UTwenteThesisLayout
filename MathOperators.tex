@@ -1,0 +1,62 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\DeclareRobustCommand{\func}[3]{#1\colon #2\to #3}
+% Delimiter helpers retain the existing argument order and default sizing.
+% An optional size (e.g. \big or \Big) supports use inside an align row.
+\DeclarePairedDelimiter{\ThesisNormDelimiter}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\ThesisAbsDelimiter}{\lvert}{\rvert}
+\DeclarePairedDelimiterX{\ThesisSetDelimiter}[2]{\lbrace}{\rbrace}{%
+  #1\,\delimsize\vert\,#2%
+}
+\DeclareRobustCommand{\norm}[3][]{%
+  \if\relax\detokenize{#1}\relax
+    \ThesisNormDelimiter*{#2}%
+  \else
+    \ThesisNormDelimiter[#1]{#2}%
+  \fi
+  % An empty index must not add an empty subscript box and its script spacing.
+  \if\relax\detokenize{#3}\relax\else_{#3}\fi
+}
+\DeclareRobustCommand{\Abs}[2][]{%
+  \if\relax\detokenize{#1}\relax
+    \ThesisAbsDelimiter*{#2}%
+  \else
+    \ThesisAbsDelimiter[#1]{#2}%
+  \fi
+}
+\DeclareRobustCommand{\Set}[3][]{%
+  \if\relax\detokenize{#1}\relax
+    \ThesisSetDelimiter{#2}{#3}%
+  \else
+    \ThesisSetDelimiter[#1]{#2}{#3}%
+  \fi
+}
+\newcommand*{\ctrans}[1]{\xrightarrow{#1}}
+\newcommand*{\dtrans}{\xrightarrow{*}}
+\DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\Aggr}{Aggr}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\abs}{\mathbf{abs}}
+\DeclareMathOperator{\Skew}{skew}
+\DeclareMathOperator{\Prod}{prod}
+\DeclareMathOperator{\Vol}{vol}
+\DeclareMathOperator{\Aff}{aff}
+\DeclareMathOperator{\Conv}{conv}
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\Cl}{cl}
+\DeclareMathOperator{\Aconv}{dconv}
+\DeclareMathOperator{\Tr}{tr}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\Ran}{ran}
+\DeclareMathOperator{\Sign}{sign}
+\DeclareMathOperator{\Dom}{dom}
+\newcommand*{\Orth}[1]{\mathrm{O}(#1)}
+\newcommand*{\So}[1]{\mathrm{SO}(#1)}

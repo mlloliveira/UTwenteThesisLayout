@@ -1,0 +1,38 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\section{Summaries, acknowledgements and declarations}
+Edit \texttt{Abstract.tex} to replace both summaries. It uses an
+\texttt{otherlanguage} environment for Dutch and returns to English afterwards.
+Both summaries are unnumbered chapters with explicit table-of-contents entries.
+The short chapter summaries use \texttt{absbox}; they serve a different purpose.
+
+\begin{lstlisting}
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+Write your acknowledgements here.
+\end{lstlisting}
+The title and table-of-contents text should agree. This pattern is also used for
+the back-matter lists. Remove the optional dedication as a whole page block,
+including its page break, to avoid leaving an accidental blank page.
+
+Annex 4 describes the author's declaration for the draft submitted to the
+manuscript committee, including contributions and AI use~\cite{ut2026}.
+Prepare it for your actual work; the example content here is not a declaration
+of research authorship. Keep submission attachments distinct from the final
+book unless instructed otherwise.
+
+\section{Why these section filenames are familiar}
+This chapter retains four section files whose contents now explain the template:
+\begin{itemize}
+\item \texttt{Section\_Radar.tex}
+\item \texttt{Section\_DetEst.tex}
+\item \texttt{Section\_Deep\_Learning.tex}
+\item \texttt{Section\_Metrics.tex}
+\end{itemize}
+The names preserve the original layout of the source tree; filenames do not
+determine the printed headings. You can rename a section file later by updating
+its corresponding \verb|\input| in \texttt{Chapter\_02.tex}.

@@ -1,0 +1,27 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\renewcommand{\FigLocation}{Chapters/Chapter_Appendix/fig/}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\ifthenelse{\equal{\backcoverlocation}{}}{%
+\fill[LightTeal2] (current page.south west) rectangle (current page.north east);
+\fill[DarkTeal] (current page.south west) rectangle ([yshift=35mm]current page.south east);
+\node[anchor=north west,text=white,text width=120mm,align=left,inner sep=0pt]
+at ([xshift=25mm,yshift=-45mm]current page.north west)
+{{\LARGE\bfseries A place for your research\par}\vspace{10mm}
+This layout keeps each chapter beside its figures and uses consistent colours,
+symbols and references throughout the thesis. The example chapters explain how
+to replace their content with your own work.\par\vspace{6mm}
+Replace this paragraph with a short description for readers encountering your
+thesis for the first time. Edit this file to change the back cover.\par\vspace{15mm}
+{\large\thesisauthor}\par\medskip ISBN \isbn};
+}{%
+\node[inner sep=0pt] at (current page.center)
+{\includegraphics[width=\paperwidth,height=\paperheight]{\backcoverlocation}};
+}
+\end{tikzpicture}
+\null\clearpage

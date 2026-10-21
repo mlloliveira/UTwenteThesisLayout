@@ -1,0 +1,32 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+% Optional complete cover artwork is selected in ThesisDetails.tex.
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\ifthenelse{\equal{\coverlocation}{}}{%
+  \fill[LightTeal2] (current page.south west) rectangle (current page.north east);
+  \fill[DarkTeal] (current page.south west) --
+    ([yshift=80mm]current page.south west) --
+    ([yshift=140mm]current page.south east) -- (current page.south east) -- cycle;
+  \draw[white!30!DarkTeal,line width=1pt]
+    ([xshift=20mm,yshift=-25mm]current page.north west) --
+    ([xshift=-20mm,yshift=-25mm]current page.north east);
+  \node[anchor=north west,text=white,text width=125mm,align=left,inner sep=0pt]
+    at ([xshift=25mm,yshift=-40mm]current page.north west)
+    {{\small A UNIVERSITY OF TWENTE THESIS LAYOUT}\par\vspace{12mm}
+     {\Huge\bfseries\thesistitleA\par}\vspace{6mm}
+     {\LARGE\thesistitleB\par}\vspace{8mm}
+     {\large\thesissubtitle\par}};
+  \node[anchor=south west,text=white,inner sep=0pt,align=left]
+    at ([xshift=25mm,yshift=25mm]current page.south west)
+    {{\Large\thesisauthor}\\[4mm]{\large\thesisyear}};
+}{%
+  \node[inner sep=0pt] at (current page.center)
+    {\includegraphics[width=\paperwidth,height=\paperheight]{\coverlocation}};
+}
+\end{tikzpicture}
+\null\clearpage

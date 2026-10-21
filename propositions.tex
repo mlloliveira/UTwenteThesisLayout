@@ -1,0 +1,47 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\documentclass[11pt]{memoir}
+\input{Configuration}
+\input{ThesisDetails}
+\selectlanguage{english}
+\geometry{papersize={154mm,216mm},layoutsize={148mm,210mm},
+  layoutoffset={3mm,3mm},bindingoffset=-3mm,
+  inner=10mm,outer=10mm,top=15mm,bottom=15mm}
+\begin{document}
+\frontmatter
+\pagestyle{empty}
+\centering
+
+{\Large Propositions accompanying the thesis}
+
+\vspace*{2\bigskipamount}
+
+{\LARGE\bfseries\thesistitle}
+\vspace{0.5cm}
+
+{\normalfont\Large\scshape\thesissubtitle}
+
+\vspace*{1\bigskipamount}
+To be defended by \thesisauthor ~on \defenseday ~of \defensemonth, \thesisyear
+\vspace*{10mm}
+
+\begin{enumerate}[itemsep=1pt]
+\item Keeping figures with their chapters makes the source of a thesis easier
+to navigate.~(This~thesis)
+\item Central symbol declarations can support consistent mathematical notation.~(This~thesis)
+\item Separating publications from references makes their different roles
+visible to the reader.~(This~thesis)
+\item A small set of shared design controls simplifies visual revision.~(This~thesis)
+\item Reproducible analysis requires documenting the assumptions as well as
+the computational steps.
+\item Reporting measurement uncertainty improves the interpretation of a
+numerical result.
+\item A clear question is often the most useful contribution to a discussion.
+\item Time spent explaining a method can reveal where it needs improvement.
+\end{enumerate}
+
+\end{document}

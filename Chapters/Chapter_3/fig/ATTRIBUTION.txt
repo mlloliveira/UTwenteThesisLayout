@@ -1,0 +1,13 @@
+earth-apollo17.jpg
+Title: The Earth seen from Apollo 17 (The Blue Marble)
+Creator: NASA / Apollo 17 crew
+Date: 7 December 1972
+NASA photograph identifier: AS17-148-22727
+Source: https://commons.wikimedia.org/wiki/File:The_Earth_seen_from_Apollo_17.jpg
+Downloaded original: https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg
+Downloaded: 21 October 2026
+Reuse status: Public domain in the United States, identified as PD-USGov-NASA
+on the source page. See that page for the full rights statement.
+Stored file: unchanged downloaded JPEG. One example panel crops it in TeX;
+the source file itself is not cropped or modified.
+Credit in captions: NASA / Apollo 17 crew, via Wikimedia Commons.

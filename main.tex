@@ -1,0 +1,63 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\documentclass[11pt]{memoir}
+\input{Configuration}
+\input{MathOperators}
+\input{DeclareSymbols}
+\input{ThesisDetails}
+\addbibresource{References/references.bib}
+\addbibresource{References/publications.bib}
+\selectlanguage{english}
+% Optional drafting shortcut, before begin{document}:
+% \includeonly{Chapters/Chapter_3/Chapter_03}
+\begin{document}
+\setlist{nolistsep}
+\frontmatter
+% The titling-page environment resets page numbering. Avoid duplicate page
+% destinations for the cover/title leaves and the following front matter.
+\hypersetup{pageanchor=false}
+\input{Chapters/Chapter_0/Title_Preamb.tex}
+\hypersetup{pageanchor=true}
+\pagestyle{notationstyle}
+\input{Chapters/Chapter_0/Acknowledgement.tex}
+\input{Chapters/Chapter_0/Abstract.tex}
+{\hypersetup{linkcolor=black}
+\cleardoublepage
+\tableofcontents*
+% Optional: \listoffigures* and \listoftables*
+}
+\mainmatter
+\pagestyle{mypagestyle}
+\setsecnumdepth{subsection}
+\include{Chapters/Chapter_1/Chapter_01}
+\include{Chapters/Chapter_2/Chapter_02}
+\include{Chapters/Chapter_3/Chapter_03}
+\include{Chapters/Chapter_4/Chapter_04}
+\include{Chapters/Chapter_5/Chapter_05}
+\include{Chapters/Chapter_6/Chapter_06}
+\include{Chapters/Chapter_7/Chapter_07}
+\include{Chapters/Chapter_8/Chapter_08}
+% Optional numbered appendices belong here; see Chapter 7.
+\backmatter
+\renewcommand{\chaptermark}[1]{\markboth{\myfontconfig#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\myfontconfig#1}{}}
+\pagestyle{notationstyle}
+\setcounter{chapCnt}{-1}
+{\hypersetup{linkcolor=black}
+\input{Chapters/Chapter_Appendix/Acronyms}
+\input{Chapters/Chapter_Appendix/MathSymbols}
+}
+\input{Chapters/Chapter_Appendix/Notation}
+{\hypersetup{linkcolor=black,urlcolor=black}
+\printbibliography[notkeyword=mypub,heading=bibintoc]
+\markboth{\myfontconfig Bibliography}{\myfontconfig Bibliography}
+\printbibliography[keyword=mypub,title={Publications},heading=bibintoc]
+\markboth{\myfontconfig Publications}{\myfontconfig Publications}
+}
+\cleardoublepage
+\input{Chapters/Chapter_Appendix/BackCover}
+\end{document}

@@ -1,0 +1,98 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+% UT model: Doctoral Regulations, 1 January 2026, Annex 3, pp. 36--39.
+% Keep the formal wording; personalise ThesisDetails and committee rows.
+% University approval is still needed before printing. See Chapter 2.
+\begin{titlingpage}
+\input{Chapters/Chapter_0/Cover.tex}
+\thispagestyle{empty}\null\clearpage
+% Half-title and blank reverse, as in Annex 3.
+\thispagestyle{empty}
+\begin{center}
+\vspace*{2\bigskipamount}
+{\LARGE\bfseries\MakeUppercase{\thesistitle}\par}
+\vspace{10mm}
+{\large\MakeUppercase{\thesissubtitle}\par}
+\vfill
+{\Large\thesisauthor\par}
+\end{center}
+\clearpage
+\thispagestyle{empty}\null\clearpage
+% Formal title page. The 2026 model does not include birth details.
+\thispagestyle{empty}
+\begin{center}
+\vspace*{2\bigskipamount}
+{\LARGE\bfseries\MakeUppercase{\thesistitle}\par}
+\medskip
+{\large\MakeUppercase{\thesissubtitle}\par}
+\vfill
+{\Large DOCTORAL THESIS\par}
+\bigskip\bigskip
+to obtain\par\medskip
+the degree of doctor at the University of Twente,\par\medskip
+on the authority of the rector magnificus,\par\medskip
+\rectorname,\par\medskip
+on account of the decision of the Doctorate Board,\par\medskip
+to be publicly defended\par\medskip
+on \defenseweekday\ the \defenseday\ of \defensemonth\ \thesisyear\ at \defensetime\ hours\par
+\bigskip\bigskip
+by\par\bigskip\bigskip
+{\bfseries\thesisauthor\par}
+\vspace*{2\bigskipamount}
+\end{center}
+\clearpage
+% Approval and colophon follow the concrete Annex 3 model (p. 38).
+\thispagestyle{empty}
+\noindent This doctoral thesis has been approved by:\par\bigskip
+\noindent the promotor:\par
+\noindent\promotorname\par\bigskip
+\noindent the co-promotor:\par
+\noindent\copromotorname\par
+\vfill
+\noindent\begin{tabular}{@{}ll@{}}
+Cover design: & \coverdesigner\\
+Printed by: & \printername\\
+Layout: & \layoutdesigner\\
+ISBN (print): & \isbn\\
+ISBN (digital): & \isbnd\\
+URL: & \texttt{https://doi.org/\doi}
+\end{tabular}\par\bigskip
+% The model's publication rights statement describes the example THESIS.
+% It is not a software licence for this template; see LICENSING.txt.
+\noindent\textcopyright\ \thesisyear\ \thesisauthorshort, The Netherlands.
+All rights reserved. No parts of this thesis may be reproduced, stored in a
+retrieval system or transmitted in any form or by any means without permission
+of the author. Alle rechten voorbehouden. Niets uit deze uitgave mag worden
+vermenigvuldigd, in enige vorm of op enige wijze, zonder voorafgaande
+schriftelijke toestemming van de auteur.
+\clearpage
+\thispagestyle{empty}
+\noindent\textbf{MANUSCRIPT COMMITTEE:}\par\bigskip
+% Give each person's actual title, initials, surname and affiliation.
+{\small\noindent\begin{tabularx}{\textwidth}{@{}lX@{}}
+Chair/secretary: & \chairname\ (University of Twente)\\[8pt]
+Promotor: & \promotorname\ (University of Twente)\\[8pt]
+Co-promotor: & \copromotorname\ (University of Twente)\\[8pt]
+Members: & prof.\ dr.\ M.~Rivera (Example University)\\[4pt]
+& prof.\ dr.\ K.~Bakker (Example Institute)\\[4pt]
+& dr.\ P.~Singh (Example University)
+\end{tabularx}\par}
+\vfill
+\begin{center}\small
+This example thesis was prepared in the \researchgroup,\par
+\facultyname,\par University of Twente, The Netherlands.\par\medskip
+Funding acknowledgement: Example Research Programme, grant XX-XXXX.\par
+\bigskip
+\includegraphics[width=0.4\textwidth]{Chapters/Chapter_0/fig/ut_logo.pdf}
+\end{center}
+\clearpage
+% Optional dedication. Remove this page if it is not wanted.
+\thispagestyle{empty}
+\vspace*{0.35\textheight}
+\begin{center}\itshape For everyone who helped turn questions into understanding.\end{center}
+\clearpage
+\end{titlingpage}

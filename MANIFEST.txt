@@ -1,0 +1,60 @@
+Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+Distribution and modification are subject to LPPL version 1.3c.
+SPDX-License-Identifier: LPPL-1.3c
+Part of the LPPL-covered work listed in MANIFEST.txt.
+See LICENSE and LICENSING.txt for the licence and scope.
+
+LPPL-covered work
+.gitignore
+Chapters/Chapter_0/Abstract.tex
+Chapters/Chapter_0/Acknowledgement.tex
+Chapters/Chapter_0/Cover.tex
+Chapters/Chapter_0/Title_Preamb.tex
+Chapters/Chapter_1/Chapter_01.tex
+Chapters/Chapter_2/Chapter_02.tex
+Chapters/Chapter_2/Section_Deep_Learning.tex
+Chapters/Chapter_2/Section_DetEst.tex
+Chapters/Chapter_2/Section_Metrics.tex
+Chapters/Chapter_2/Section_Radar.tex
+Chapters/Chapter_3/Chapter_03.tex
+Chapters/Chapter_4/Chapter_04.tex
+Chapters/Chapter_5/Chapter_05.tex
+Chapters/Chapter_6/Chapter_06.tex
+Chapters/Chapter_7/Chapter_07.tex
+Chapters/Chapter_8/Chapter_08.tex
+Chapters/Chapter_Appendix/Acronyms.tex
+Chapters/Chapter_Appendix/BackCover.tex
+Chapters/Chapter_Appendix/MathSymbols.tex
+Chapters/Chapter_Appendix/Notation.tex
+Configuration.tex
+DeclareSymbols.tex
+LICENSING.txt
+MANIFEST.txt
+MathOperators.tex
+README.md
+References/publications.bib
+References/references.bib
+ThesisDetails.tex
+main.tex
+propositions.tex
+tests/README.txt
+tests/check-template.py
+tests/preamble-regression.tex
+
+Separately distributed assets, notices, licence text and directory markers
+Chapters/Chapter_0/fig/ATTRIBUTION.txt
+Chapters/Chapter_0/fig/ut_logo.pdf
+Chapters/Chapter_1/fig/.gitkeep
+Chapters/Chapter_2/fig/.gitkeep
+Chapters/Chapter_3/fig/ATTRIBUTION.txt
+Chapters/Chapter_3/fig/earth-apollo17.jpg
+Chapters/Chapter_4/fig/.gitkeep
+Chapters/Chapter_5/fig/.gitkeep
+Chapters/Chapter_6/fig/.gitkeep
+Chapters/Chapter_7/fig/.gitkeep
+Chapters/Chapter_Appendix/fig/.gitkeep
+LICENSE
+
+University-prescribed wording embedded in source files is excluded from
+the source licence grant; see LICENSING.txt. The original LICENSE text
+retains its own copyright and verbatim-redistribution permission.

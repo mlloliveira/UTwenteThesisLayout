@@ -1,0 +1,115 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{Extend and maintain the layout}\label{chap:07}
+\renewcommand{\FigLocation}{Chapters/Chapter_7/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_7/}
+\begin{absbox}
+Keep structural changes local and predictable. This chapter explains document divisions, partial builds, the package responsibilities and the custom commands that connect the layout.
+\end{absbox}
+
+\section{Chapters and section files}
+An ordinary chapter begins with this pattern:
+\begin{lstlisting}
+\chapter{A Descriptive Title}\label{chap:example}
+\renewcommand{\FigLocation}{Chapters/Chapter_3/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_3/}
+\begin{absbox}
+  A short account of this chapter's purpose and contribution.
+\end{absbox}
+\section{The first section}
+\end{lstlisting}
+\verb|\FigLocation| is a convenience prefix for graphics;
+\verb|\ChapLocation| is a prefix for section files. They are ordinary macros,
+not a change of working directory. Relative paths still resolve from the root
+where \texttt{main.tex} is compiled. Reassign them in each chapter rather than
+relying on whichever chapter happened to run before it.
+
+\verb|\include| gives each chapter its own auxiliary file and starts a new page.
+\verb|\input| inserts a smaller file without those chapter-level page boundaries.
+Keep \verb|\include| calls in \texttt{main.tex} and use \verb|\input| for sections.
+The original four section files in Chapter 2 demonstrate that distinction.
+
+\section{Partial builds and back matter}
+Use \verb|\includeonly{Chapters/Chapter_3/Chapter_03}| in the preamble for a
+drafting shortcut. Build the complete thesis first so omitted chapters have
+auxiliary records, and build it completely again before checking lists and
+citations. The custom colour counter and symbol-use state are not a guarantee
+of final output in a partial build; do not judge first-use pages from one.
+
+\verb|\frontmatter| uses front-matter numbering;
+\verb|\mainmatter| starts numbered chapters;
+\verb|\backmatter| suppresses chapter numbering again. The list of symbols is
+printed by \verb|\PrintThesisSymbols| inside \texttt{MathSymbols.tex}. Keep the
+label \texttt{ch:listofsymbols} there: symbol hyperlinks target that label.
+\verb|\ThesisSymbolRecord| and \verb|\ThesisUntrackedAcronyms| are supporting
+registry commands, not commands to insert into normal prose. The former reads
+auxiliary records; the latter prevents glossary descriptions from changing
+acronym first-use state.
+
+To add a numbered appendix, put its source inside the existing
+\texttt{Chapter\_Appendix} directory and add it before \verb|\backmatter|:
+\begin{lstlisting}
+\appendix
+\include{Chapters/Chapter_Appendix/AdditionalMethods}
+\backmatter
+\end{lstlisting}
+Its file begins with \verb|\chapter{Additional methods}|. Numbered appendices
+also exercise the chapter style, so extend the marker count/palette or disable
+markers for that part. The existing abbreviation and notation files are
+unnumbered back-matter chapters and do not require \verb|\appendix|.
+
+\section{Package responsibilities}
+Load packages once in the preamble. The groups below help locate a setting
+without treating every package's internal commands as part of this template.
+\begin{description}
+\item[Page and text design] \texttt{memoir}, \texttt{geometry}, \texttt{titlesec},
+\texttt{microtype}, \texttt{fontenc}, \texttt{lmodern}, \texttt{setspace} and
+\texttt{footmisc} provide the book structure, dimensions, fonts and spacing.
+\item[Colour and graphics] \texttt{xcolor}, \texttt{graphicx}, \texttt{tikz},
+\texttt{tcolorbox}, \texttt{subfig}, \texttt{wrapfig} and \texttt{pdfpages}
+support artwork, boxes and imported pages. \texttt{circuitikz} is available for
+circuit diagrams; its \texttt{siunitx} option supplies the unit tools used here.
+The inherited \texttt{background} package is neutralised by an empty background;
+the example covers explicitly draw their own page overlays.
+\item[Mathematics] \texttt{amsmath}, \texttt{amsthm}, \texttt{amssymb} and
+\texttt{mathtools} support displays, proofs, symbols and paired delimiters.
+\item[Tables and lists] \texttt{booktabs}, \texttt{tabularx}, \texttt{longtable},
+\texttt{multirow}, \texttt{colortbl}, \texttt{multicol} and \texttt{enumitem}
+provide rules, wrapping columns, multipage tables and list controls.
+\texttt{varwidth} and \texttt{minibox} support compact text boxes.
+\item[Language and references] \texttt{babel}, \texttt{csquotes},
+\texttt{acronym}, \texttt{biblatex} and \texttt{hyperref} handle language,
+quotations, abbreviation state, citations and links. Only Dutch and English
+are enabled in this template. \texttt{alphabeta} supports Greek letters in text.
+\item[Code and algorithms] \texttt{listings} prints literal source examples;
+\texttt{algorithm}, \texttt{algorithmicx} and \texttt{algpseudocode} provide the
+pseudocode example. \texttt{ifthen} selects optional cover artwork;
+\texttt{intcalc} supports integer arithmetic in inherited design code.
+\end{description}
+The inherited \texttt{lipsum} and \texttt{breakcites} dependencies are not needed
+for these examples and have been omitted. Consult the class and package manuals
+before adding another package that manages the same captions, chapter styles
+or bibliography. The template does not need a shell-escape-enabled build.
+
+\section{Keep links and first-use state understandable}
+\verb|\hypersetup| controls PDF metadata and link colours. The configuration
+sets acronym links black through public font hooks; the symbol commands also
+use black links. Setting \texttt{linkcolor} therefore changes ordinary
+cross-references without recolouring every tracked symbol or abbreviation.
+The wrappers preserve the acronym package's fonts through three command copies:
+\begin{lstlisting}
+\ThesisOriginalAcsFont
+\ThesisOriginalAcfFont
+\ThesisOriginalAcfsFont
+\end{lstlisting}
+Leave these copies intact when only changing a palette.
+
+Use meaningful text in bookmarks, avoid fragile formatting in captions, and
+give figures a short list entry when the full caption is long. Cross-references
+are records built across runs, not values calculated correctly in every first
+pass. After changing a bibliography backend or moving many labels, rebuild
+the document's auxiliary files through your editor's clean/recompile operation.

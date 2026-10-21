@@ -1,0 +1,140 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{Figures, tables and algorithms}\label{chap:03}
+\renewcommand{\FigLocation}{Chapters/Chapter_3/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_3/}
+\begin{absbox}
+Keep assets beside their chapter, cite their origin and show enough information for readers to understand them. These examples demonstrate photographs, subfigures, tables, diagrams and pseudocode.
+\end{absbox}
+
+\section{A figure stored with its chapter}
+Every chapter sets \verb|\FigLocation| before its figures. Use a filename with
+an explicit extension and a width relative to the current line, especially
+inside a narrow box or subfigure. \autoref{fig:ch3:earth} uses a downloaded NASA
+Apollo 17 photograph, stored in this chapter's \texttt{fig} directory.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.52\linewidth]{\FigLocation earth-apollo17.jpg}
+\caption[Earth from Apollo 17]{Earth from Apollo 17. Credit: NASA/Apollo 17 crew,
+7 December 1972; public-domain image obtained through Wikimedia Commons.
+Source and download details are in \texttt{fig/ATTRIBUTION.txt}.}
+\label{fig:ch3:earth}
+\end{figure}
+
+\begin{lstlisting}
+\renewcommand{\FigLocation}{Chapters/Chapter_3/fig/}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.52\linewidth]
+    {\FigLocation earth-apollo17.jpg}
+  \caption[Short list entry]{A descriptive caption and credit.}
+  \label{fig:ch3:earth}
+\end{figure}
+\end{lstlisting}
+Place \verb|\label| after \verb|\caption| so it records the figure number.
+The optional caption supplies a shorter list-of-figures entry. The placement
+letters permit a figure here, at the top, at the bottom, or on a float page.
+They are preferences, not fixed positions. Use \verb|\clearpage| at a deliberate
+boundary to flush waiting floats instead of repeatedly forcing placement.
+
+\section{Compare panels without creating a new asset}
+The existing layout loads \texttt{subfig}. Use \verb|\subfloat| from that package;
+do not also load \texttt{subcaption}. The second panel below crops the same image
+at typesetting time. This is a layout demonstration, not a new observation.
+\begin{figure}[htbp]
+\centering
+\subfloat[Full photograph]{\includegraphics[width=0.39\linewidth]{\FigLocation earth-apollo17.jpg}}
+\hfill
+\subfloat[Central crop]{\includegraphics[width=0.39\linewidth,trim=30mm 30mm 30mm 30mm,clip]{\FigLocation earth-apollo17.jpg}}
+\caption{A full image and a crop of the same NASA/Apollo 17 photograph. Credit
+and public-domain source as in \autoref{fig:ch3:earth}.}
+\label{fig:ch3:panels}
+\end{figure}
+\begin{lstlisting}
+\subfloat[Full photograph]{\includegraphics[width=.39\linewidth]
+  {\FigLocation earth-apollo17.jpg}}
+\hfill
+\subfloat[Central crop]{\includegraphics[width=.39\linewidth,
+  trim=30mm 30mm 30mm 30mm,clip]{\FigLocation earth-apollo17.jpg}}
+\end{lstlisting}
+The trim order is left, bottom, right, top; unitless values are big points.
+This example uses explicit millimetres. Keep the total crop smaller than the
+image's natural dimensions, which depend on its resolution metadata.
+Always state when a crop, contrast adjustment or annotation changes how an image
+is presented. Keep the original asset and its attribution with the chapter.
+
+\section{Tables with readable precision}
+\autoref{tab:ch3:results} contains invented data, solely to demonstrate a table.
+\texttt{booktabs} supplies the horizontal rules; \texttt{siunitx} supplies the
+\texttt{S} column that aligns decimal values. Put units in column headings.
+\begin{table}[htbp]
+\centering
+\caption{Illustrative measurements; these are not research results.}
+\label{tab:ch3:results}
+\begin{tabular}{@{}l S[table-format=2.1] S[table-format=1.2]@{}}
+\toprule
+Method & {Time (s)} & {Error (a.u.)}\\\midrule
+Baseline & 12.4 & 0.32\\
+Alternative & 10.8 & 0.28\\
+Reference & 15.0 & 0.25\\\bottomrule
+\end{tabular}
+\end{table}
+\begin{lstlisting}
+\begin{tabular}{@{}l S[table-format=2.1]@{}}
+  \toprule
+  Method & {Time (s)} \\
+  \midrule
+  Baseline & 12.4 \\
+  \bottomrule
+\end{tabular}
+\end{lstlisting}
+Use \texttt{tabularx} for wrapping text columns, \texttt{longtable} for a table
+that can break over pages, and \texttt{multirow} only when a shared row heading
+actually helps. A \texttt{longtable} is not placed inside a \texttt{table} float.
+Avoid shrinking a wide table until the letters become unreadable.
+
+\section{Editable diagrams}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=8mm,>=stealth]
+\node[draw=\ColorTheme,rounded corners,minimum height=9mm] (input) {Input};
+\node[draw=\ColorTheme,rounded corners,minimum height=9mm,right=of input] (method) {Method};
+\node[draw=\ColorTheme,rounded corners,minimum height=9mm,right=of method] (output) {Output};
+\draw[->,thick] (input) -- (method);
+\draw[->,thick] (method) -- (output);
+\end{tikzpicture}
+\caption{A small vector diagram drawn with TikZ and the current chapter colour.}
+\label{fig:ch3:workflow}
+\end{figure}
+For a diagram this small, its TikZ source can remain in the chapter. Larger
+diagram sources can live in the same \texttt{fig} directory and be included
+with \verb|\input{\FigLocation workflow.tex}|. PDF is suitable for exported
+vector artwork; PNG and JPEG are suitable for raster images. No EPS conversion
+or shell escape is needed for the examples in this template.
+
+\section{Pseudocode and ordinary footnotes}
+\begin{algorithm}[htbp]
+\caption{Mean of a nonempty sequence}\label{alg:mean}
+\begin{algorithmic}[1]
+\Require Values $u_1,\ldots,u_n$ with $n>0$
+\Ensure Arithmetic mean $m$
+\State $s\gets 0$
+\For{$i=1,\ldots,n$}
+  \State $s\gets s+u_i$
+\EndFor
+\LineComment{Normalise only after accumulating the observations.}
+\State $m\gets s/n$
+\State \Return $m$
+\end{algorithmic}
+\end{algorithm}
+\texttt{algorithm} supplies the floating caption; \texttt{algorithmic} supplies
+the pseudocode. The configuration adds \verb|\LineComment{text}| as a full-line
+comment. Refer to it with \verb|\autoref{alg:mean}|, as in \autoref{alg:mean}.
+Use \verb|\myfootnote{text}| for an ordinary numbered footnote.\myfootnote{This
+is a normal footnote; its helper has the same argument as \texttt{\string\footnote}.}
+Publication-origin notes use a separate helper introduced in \autoref{chap:05}.

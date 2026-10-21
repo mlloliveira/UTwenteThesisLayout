@@ -1,0 +1,94 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\chapter{References and your publications}\label{chap:05}
+\renewcommand{\FigLocation}{Chapters/Chapter_5/fig/}
+\renewcommand{\ChapLocation}{Chapters/Chapter_5/}
+\begin{absbox}
+Maintain two databases with different purposes. References record the literature consulted; publications record the author’s own output. A keyword determines which printed list receives an entry.
+\end{absbox}
+
+\pubfootnote{This chapter illustrates a publication-origin note. The accompanying
+entry \cite{morganExample} is fictional and demonstrates formatting only.}
+
+\section{Two files, two roles}
+Put external literature in \texttt{References/references.bib} and your own
+publications in \texttt{References/publications.bib}. Both files are loaded by
+\texttt{main.tex}. Every entry intended for the Publications list needs
+\texttt{keywords = \{mypub\}}. The database filename alone does not select
+the printed list.
+\begin{lstlisting}[language={}]
+@article{morganExample,
+  author       = {Morgan, Alex and Taylor, Jordan},
+  title        = {An Example Publication for This Template},
+  journaltitle = {Example Journal},
+  year         = {2026},
+  volume       = {1},
+  pages        = {1--8},
+  keywords     = {mypub},
+  note         = {Fictional example; replace before submission}
+}
+\end{lstlisting}
+The real documentation references are separated from these fictional entries.
+For example, the \texttt{memoir} manual~\cite{memoirManual} is consulted
+literature, while \cite{morganExample} is an illustrative author publication.
+Do not duplicate the same entry key across the two databases.
+
+\section{Printing the lists}
+The end of \texttt{main.tex} uses the original keyword distinction:
+\begin{lstlisting}
+\printbibliography[notkeyword=mypub,heading=bibintoc]
+\printbibliography[keyword=mypub,title={Publications},
+  heading=bibintoc]
+\end{lstlisting}
+\texttt{heading=bibintoc} adds each heading to the table of contents. The
+alphabetic citation labels are shared across the document; the split changes
+membership, not the identity of a cited item. The default style is
+\texttt{alphabetic}, not an IEEE bibliography style.
+
+Only cited entries normally print. To include a particular publication that
+is not cited in the prose, use an explicit key:
+\begin{lstlisting}
+\nocite{morganSupplement}
+\end{lstlisting}
+\nocite{morganSupplement}
+Avoid \verb|\nocite{*}| unless you really want every entry from both databases.
+An own-publication entry without \texttt{mypub} will appear in the literature
+list; an external reference with that keyword will appear under Publications.
+
+\section{Citations and publication notes}
+Use \verb|\cite{key}| for a normal citation, \verb|\textcite{key}| when the author
+belongs in the sentence, and \verb|\parencite{key}| for the style's parenthetical
+form. An optional locator can be useful, for example
+\verb|\cite[Chapter 3]{memoirManual}|. Citation commands inside the literal
+listings do not count as citations.
+
+The existing \verb|\pubfootnote{text}| helper inserts an unnumbered footnote
+without advancing the ordinary footnote counter. Place it directly after a
+chapter heading or its opening abstract when giving a paper's origin:
+\begin{lstlisting}
+\pubfootnote{Parts of this chapter are based on
+  \cite{morganExample}.}
+\end{lstlisting}
+Use accurate wording for an adapted or reproduced paper, include the
+coauthors where appropriate, and retain any required publisher credit. The
+note is not a substitute for a bibliography entry. Ordinary notes use
+\verb|\myfootnote{text}| or \verb|\footnote{text}|.
+
+\section{Changing the citation style deliberately}
+The \texttt{biblatex} options are in \texttt{Configuration.tex}. For numeric
+citations change \texttt{style=alphabetic} to \texttt{style=numeric}; keep the
+keyword filters. The \texttt{url}, \texttt{doi} and \texttt{isbn} options control
+those fields in bibliography entries, not the identifiers on the title pages.
+\texttt{backref=true} adds citing-page information. The sample online references
+include their access links in \texttt{howpublished} because URLs are disabled
+by the inherited bibliography options.
+
+If you switch to \texttt{backend=biber}, use Biber rather than BibTeX and rebuild
+from clean auxiliary files. Change the tool and the option together. The
+\texttt{biblatex} manual~\cite{biblatexManual} describes the richer styles and
+data model. Keep a single bibliography system; do not add \texttt{natbib} or
+a separate \verb|\bibliographystyle| command on top of this setup.

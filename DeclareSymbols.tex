@@ -1,0 +1,151 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+% Global mathematical symbol registry.
+% Existing \mathsymbols{chapter}{name}{glyph}{description} declarations remain
+% valid. The chapter argument is retained for compatibility and is ignored.
+% New declarations may use \DeclareThesisSymbol{name}{glyph}{description}.
+% Page records come from shipped occurrences, not temporary measuring boxes.
+% Like other cross-references, the list needs at least two compilation passes.
+
+\makeatletter
+\newif\ifthesis@tracksymbols
+\thesis@tracksymbolstrue
+\newcounter{thesis@symboloccurrence}
+\newcommand{\thesis@symbolrows}{}
+\newcommand{\thesis@resetrecords}{}
+
+% This public command is written to .aux files. Only the first shipped record
+% wins, even if a float's source order differs from its final page order.
+\newcommand{\ThesisSymbolRecord}[3]{%
+  \ifcsname thesis@recorded@#1\endcsname
+  \else
+    \expandafter\gdef\csname thesis@recorded@#1\endcsname{}%
+    \newlabel{thesis.symbol.#1}{{}{#2}{}{#3}{}}%
+  \fi
+}
+% Keep newly written auxiliary files readable if the earlier preamble is restored.
+\AtBeginDocument{%
+  \immediate\write\@auxout{\string\providecommand\string\ThesisSymbolRecord[3]{}}%
+}
+\newcommand{\thesis@resetrecord}[1]{%
+  \global\expandafter\let\csname thesis@recorded@#1\endcsname\@undefined
+}
+% LaTeX rereads the new .aux at the end to detect changed references. Reset the
+% first-record guards so that its normal rerun detection sees the new records.
+\AtEndDocument{\thesis@resetrecords}
+
+% Render composite glyphs without registering their component symbols or
+% creating nested hyperlinks.
+\newcommand{\thesis@rawglyph}[1]{%
+  \begingroup
+    \thesis@tracksymbolsfalse
+    \csname thesis@glyph@#1\endcsname
+  \endgroup
+}
+
+\newcommand{\thesis@recorduse}[1]{%
+  \stepcounter{thesis@symboloccurrence}%
+  \edef\thesis@destination{thesis.symbol.#1.\arabic{thesis@symboloccurrence}}%
+  \hypertarget{\thesis@destination}{}%
+  % Each rendering gets its own destination. A delayed write in a discarded
+  % caption/measurement box never reaches the .aux and cannot steal first use.
+  % Do not call \label here: amsmath reserves it for the equation label.
+  \protected@write\@auxout{}{%
+    \string\ThesisSymbolRecord{#1}{\thepage}{\thesis@destination}%
+  }%
+}
+
+\newcommand{\thesis@usesymbol}[1]{%
+  \ifthesis@tracksymbols
+    \ifmeasuring@
+      \ensuremath{\thesis@rawglyph{#1}}%
+    \else
+      \thesis@recorduse{#1}%
+      \ensuremath{\hyperref[ch:listofsymbols]{\color{black}\thesis@rawglyph{#1}}}%
+    \fi
+  \else
+    \ensuremath{\thesis@rawglyph{#1}}%
+  \fi
+}
+
+\newcommand{\DeclareThesisSymbol}[3]{%
+  \@ifundefined{#1}{%
+    \expandafter\gdef\csname thesis@glyph@#1\endcsname{#2}%
+    \expandafter\gdef\csname thesis@description@#1\endcsname{#3}%
+    \expandafter\DeclareRobustCommand\csname #1\endcsname{\thesis@usesymbol{#1}}%
+    \g@addto@macro\thesis@symbolrows{\thesis@symbolrow{#1}}%
+    \g@addto@macro\thesis@resetrecords{\thesis@resetrecord{#1}}%
+    % PDF strings cannot contain page writes, anchors or arbitrary math glyphs.
+    % Use the identifier as a safe fallback; headings may supply texorpdfstring
+    % explicitly when a different human-readable bookmark is desired.
+    \pdfstringdefDisableCommands{\expandafter\def\csname #1\endcsname{#1}}%
+  }{%
+    \PackageError{thesis-symbols}{Symbol command '#1' is already defined}%
+      {Choose a unique symbol name. Existing commands are never overwritten.}%
+  }%
+}
+
+% TOC/LOF/LOT entries replay headings and captions. Their display must not create
+% earlier first-use records. The extra group leaves the existing command's state
+% and auxiliary stream handling intact.
+\AddToHook{cmd/@starttoc/before}{\begingroup\thesis@tracksymbolsfalse}
+\AddToHook{cmd/@starttoc/after}{\endgroup}
+
+% Close the conditional before emitting alignment cells. Inclusion is based on
+% the previous run's shipped records, never on a globally mutated trial-box flag.
+\newcommand{\thesis@symbolrow}[1]{%
+  \ifcsname r@thesis.symbol.#1\endcsname
+    \expandafter\thesis@printsymbolrow
+  \else
+    \expandafter\@gobble
+  \fi{#1}%
+}
+\newcommand{\thesis@printsymbolrow}[1]{%
+  \hyperref[thesis.symbol.#1]{\ensuremath{\thesis@rawglyph{#1}}} &
+  \begingroup
+    \thesis@tracksymbolsfalse
+    \ThesisUntrackedAcronyms
+    \csname thesis@description@#1\endcsname
+  \endgroup\dotfill &
+  \pageref{thesis.symbol.#1} \\
+}
+\newcommand{\PrintThesisSymbols}{\thesis@symbolrows}
+\makeatother
+
+% Locally route public acronym formatting commands through their starred forms.
+% The star suppresses usage logging and first-use labels; optional arguments and
+% existing explicitly starred calls still pass through normally. Copies and
+% wrappers disappear when the surrounding glossary-description group ends.
+\ExplSyntaxOn
+\NewDocumentCommand{\ThesisUntrackedAcronyms}{}{%
+  \clist_map_inline:nn
+    {ac,Ac,acs,acl,Acl,acf,Acf,acp,Acp,acsp,aclp,Aclp,acfp,Acfp,acfi,Acfi,acfip,Acfip}
+    {
+      \cs_if_exist:cT {##1}
+        {
+          \exp_args:Ncc \NewCommandCopy {thesis.acronym.original.##1} {##1}
+          \exp_args:Nc \RenewDocumentCommand {##1} {s}
+            {\use:c {thesis.acronym.original.##1}*}
+        }
+    }
+}
+\ExplSyntaxOff
+
+\newcommand{\mathsymbols}[4]{\DeclareThesisSymbol{#2}{#3}{#4}}
+
+
+% EXAMPLE DECLARATIONS. Register commands here before use in the document.
+% The explanations may appear in prose after their first equation.
+\DeclareThesisSymbol{sampleInput}{x}{Input value}
+\DeclareThesisSymbol{sampleOutput}{y}{Output value}
+\DeclareThesisSymbol{sampleSlope}{a}{Linear model coefficient}
+\DeclareThesisSymbol{sampleOffset}{b}{Linear model offset}
+\DeclareThesisSymbol{sampleCount}{N}{Number of observations}
+\DeclareThesisSymbol{sampleVector}{\mathbf{x}}{Vector of observations}
+\DeclareThesisSymbol{sampleMatrix}{\mathbf{A}}{Linear transformation matrix}
+\DeclareThesisSymbol{sampleError}{\varepsilon}{Residual error}
+\DeclareThesisSymbol{unusedExample}{\zeta}{Unused example; omitted from the printed list}

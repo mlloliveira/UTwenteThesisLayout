@@ -1,0 +1,43 @@
+% Copyright (c) 2026 Marcio Luiz Lima de Oliveira and V. el Hakim.
+% Distribution and modification are subject to LPPL version 1.3c.
+% SPDX-License-Identifier: LPPL-1.3c
+% Part of the LPPL-covered work listed in MANIFEST.txt.
+% See LICENSE and LICENSING.txt for the licence and scope.
+
+\section{One source for personal details}
+Both entry points read \texttt{ThesisDetails.tex}. The names are fictional, the
+year is \texttt{20XX}, the date is \texttt{XX/XX/20XX}, and the ISBN fields use
+\texttt{XXX-XX-XXX-XXXX-X}. These examples are meant to look like book metadata
+without pretending to be assigned identifiers. Replace both print and digital
+ISBNs with the identifiers issued for your actual editions.
+
+\begin{lstlisting}
+\MyThesis[A Thesis You Can Make Your Own]
+{A Guide to This Layout}
+{Writing, Organising and Personalising a Doctoral Thesis}
+{Alex Morgan}{A.~Morgan}{20XX}
+\MyDefense[Monday]{XX}{Month}{XX:XX}
+\end{lstlisting}
+The optional argument of \verb|\MyThesis| is the first title line. Its five
+mandatory arguments are the second title line, subtitle, full name, short name
+and year. The optional argument of \verb|\MyDefense| is the weekday; its three
+mandatory arguments are day, month and time. These setters create commands,
+so call each only once. Edit their existing calls rather than adding another.
+
+The setters create these commands:
+\begin{lstlisting}
+\thesistitleA      \thesistitleB      \thesissubtitle
+\thesisauthor      \thesisauthorshort \thesisyear
+\defenseweekday   \defenseday        \defensemonth
+\defensetime
+\end{lstlisting}
+The combined
+\verb|\thesistitle| is used on formal pages and in PDF metadata.
+The separate \verb|\defensedate| is a short display date: keep it consistent
+with the expanded date fields. Tildes between initials and surnames prevent
+unhelpful line breaks. Escape special characters in metadata, for example
+\verb|Research \& Design|.
+
+The Dutch title and subtitle, supervisors, committee chair, printer and group
+also have named fields in this file. Committee member rows remain in
+\texttt{Title\_Preamb.tex}, where their number can be changed naturally.
